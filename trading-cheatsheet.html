@@ -4,31 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trading Technical Analysis — Cheat Sheet</title>
+<link rel="stylesheet" href="stratford.css">
 <style>
   :root{
-    --bg:#0d1117; --panel:#161b22; --panel2:#1c2430; --border:#2a3441;
-    --text:#e6edf3; --muted:#8b98a5; --accent:#3fb950; --accent2:#58a6ff;
-    --red:#f85149; --green:#3fb950; --amber:#d29922; --purple:#bc8cff;
-    --shadow:0 8px 30px rgba(0,0,0,.4);
+    --bg:#0a0d16; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.06); --border:rgba(255,255,255,.09);
+    --text:#eef3fb; --muted:#94a0b8; --accent:#34d399; --accent2:#22d3ee;
+    --red:#f87171; --green:#34d399; --amber:#fbbf24; --purple:#b98cff;
+    --shadow:0 12px 40px rgba(0,0,0,.5);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    background:linear-gradient(160deg,#0d1117 0%,#0a0e14 100%);
-    color:var(--text); line-height:1.6; padding:0 0 80px;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:transparent; color:var(--text); line-height:1.6; padding:0 0 80px;
   }
   header{
-    background:linear-gradient(135deg,#161b22 0%,#1c2733 100%);
-    border-bottom:1px solid var(--border); padding:40px 24px 30px; text-align:center;
-    position:relative; overflow:hidden;
+    background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    border-bottom:1px solid var(--border); padding:56px 24px 30px; text-align:center;
+    position:relative; overflow:hidden; backdrop-filter:blur(16px);
   }
   header::before{
     content:""; position:absolute; inset:0;
     background:repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(63,185,80,.04) 39px,transparent 40px);
     pointer-events:none;
   }
-  h1{font-size:2rem; font-weight:700; letter-spacing:-.5px; margin-bottom:6px;
-     background:linear-gradient(90deg,#3fb950,#58a6ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  h1{font-size:2.4rem; font-weight:800; letter-spacing:-.03em; margin-bottom:6px;
+     background:linear-gradient(120deg,#34d399,#22d3ee,#8b5cf6); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:htShine 7s linear infinite;}
+  @keyframes htShine{to{background-position:200% center}}
   .sub{color:var(--muted); font-size:.95rem}
   .wrap{max-width:960px; margin:0 auto; padding:0 20px}
 
@@ -42,14 +43,14 @@
 
   /* Nav tabs */
   nav{display:flex; gap:8px; flex-wrap:wrap; margin:24px 0 8px; position:sticky; top:0;
-      background:linear-gradient(180deg,#0d1117 70%,transparent); padding:12px 0 10px; z-index:20;}
+      background:linear-gradient(180deg,#06080f 70%,transparent); padding:12px 0 10px; z-index:20;}
   .tab{
     background:var(--panel); border:1px solid var(--border); color:var(--muted);
     padding:9px 16px; border-radius:20px; cursor:pointer; font-size:.9rem; font-weight:600;
     transition:all .18s; user-select:none;
   }
   .tab:hover{border-color:var(--accent2); color:var(--text)}
-  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#06131f; border-color:transparent}
+  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#06131f; border-color:transparent; box-shadow:0 6px 20px rgba(52,211,153,.35)}
 
   section{display:none; animation:fade .3s ease}
   section.active{display:block}
@@ -339,6 +340,7 @@
   </footer>
 </div>
 
+<script src="stratford.js"></script>
 <script>
 // ---- Tabs ----
 document.querySelectorAll('.tab').forEach(t=>{

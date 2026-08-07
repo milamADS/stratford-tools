@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agency Playbook — Stratford</title>
+<link rel="stylesheet" href="stratford.css">
 <style>
   :root{
     --bg:#0a0d14; --panel:#131a26; --panel2:#182034; --border:#26324a; --text:#eef3fa; --muted:#8b98ad; --dim:#5d6880;
@@ -11,17 +12,17 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif; color:var(--text); min-height:100vh; line-height:1.6;
-    background:radial-gradient(1000px 500px at 80% -10%,rgba(192,38,211,.10),transparent 60%),radial-gradient(900px 450px at -10% 10%,rgba(56,189,248,.08),transparent 55%),#0a0d14; padding:0 0 80px;}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif; color:var(--text); min-height:100vh; line-height:1.6;
+    background:transparent; padding:0 0 80px;}
   .wrap{max-width:920px; margin:0 auto; padding:0 22px}
-  header{text-align:center; padding:44px 22px 10px}
+  header{text-align:center; padding:60px 22px 10px}
   .badge{display:inline-block; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; color:var(--brand2); background:rgba(192,38,211,.1); border:1px solid rgba(192,38,211,.3); padding:5px 14px; border-radius:20px; margin-bottom:14px}
-  h1{font-size:2.3rem; font-weight:800; letter-spacing:-1px; background:linear-gradient(90deg,#c026d3,#38bdf8,#f5c542); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 6s linear infinite}
+  h1{font-size:2.5rem; font-weight:800; letter-spacing:-.03em; background:linear-gradient(120deg,#8b5cf6,#22d3ee,#fbbf24); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 7s linear infinite}
   @keyframes shine{to{background-position:200% center}}
   .sub{color:var(--muted); margin-top:6px}
-  a.back{display:inline-block; margin:18px 0 0; color:var(--accent); text-decoration:none; font-size:.9rem}
+  a.back{display:none}
 
-  nav{display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 8px; position:sticky; top:0; z-index:20; background:linear-gradient(180deg,#0a0d14 75%,transparent); padding:12px 0 10px}
+  nav{display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 8px; position:sticky; top:0; z-index:20; background:linear-gradient(180deg,#06080f 75%,transparent); padding:12px 0 10px}
   .tab{background:var(--panel); border:1px solid var(--border); color:var(--muted); padding:9px 15px; border-radius:20px; cursor:pointer; font-size:.86rem; font-weight:600; transition:all .18s; user-select:none}
   .tab:hover{border-color:var(--accent); color:var(--text)}
   .tab.active{background:linear-gradient(135deg,var(--brand2),var(--accent)); color:#fff; border-color:transparent}
@@ -280,6 +281,7 @@
   <footer>📚 Agency Playbook · Built by Jarvis for Ethan · Checkboxes save in your browser</footer>
 </div>
 
+<script src="stratford.js"></script>
 <script>
 document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));

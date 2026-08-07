@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Pain Log — SaaS Idea Pipeline</title>
+<link rel="stylesheet" href="stratford.css">
 <style>
   :root{
     --bg:#0a0d14; --panel:#111725; --panel2:#182034; --panel3:#1f2942; --border:#28324a;
@@ -16,22 +17,19 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    background:
-      radial-gradient(1200px 600px at 80% -10%,rgba(192,38,211,.10),transparent 60%),
-      radial-gradient(1000px 500px at -10% 10%,rgba(56,189,248,.08),transparent 55%),
-      #0a0d14;
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:transparent;
     color:var(--text); line-height:1.6; padding:0 0 100px; min-height:100vh;
   }
   .wrap{max-width:1180px; margin:0 auto; padding:0 22px}
 
   /* Header */
-  header{padding:44px 22px 26px; text-align:center; position:relative}
+  header{padding:60px 22px 26px; text-align:center; position:relative}
   .badge{display:inline-block; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; font-weight:700;
          color:var(--brand); background:rgba(255,77,109,.1); border:1px solid rgba(255,77,109,.3); padding:5px 14px; border-radius:20px; margin-bottom:14px}
-  h1{font-size:2.4rem; font-weight:800; letter-spacing:-1px;
-     background:linear-gradient(90deg,#ff4d6d,#c026d3,#38bdf8); background-size:200% auto;
-     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 6s linear infinite;}
+  h1{font-size:2.7rem; font-weight:800; letter-spacing:-.03em;
+     background:linear-gradient(120deg,#ec4899,#8b5cf6,#22d3ee); background-size:200% auto;
+     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 7s linear infinite;}
   @keyframes shine{to{background-position:200% center}}
   .sub{color:var(--muted); font-size:1rem; margin-top:6px}
   .question{margin:16px auto 0; max-width:640px; font-style:italic; color:var(--gold); font-size:.95rem;
@@ -49,7 +47,7 @@
 
   /* Toolbar */
   .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:22px 0 16px;
-           background:var(--panel); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; position:sticky; top:10px; z-index:30; box-shadow:var(--shadow-sm)}
+           background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; position:sticky; top:10px; z-index:30; box-shadow:var(--shadow-sm); backdrop-filter:blur(16px)}
   .toolbar input.search{flex:1; min-width:180px}
   .toolbar select, .toolbar input{
     background:var(--bg); border:1px solid var(--border); color:var(--text); padding:9px 12px; border-radius:9px; font-size:.9rem; transition:border-color .15s}
@@ -366,5 +364,6 @@ $('importFile').onchange=e=>{
 
 load(); render();
 </script>
+<script src="stratford.js"></script>
 </body>
 </html>

@@ -4,30 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Billion Dollar Business Ideas — Ethan</title>
+<link rel="stylesheet" href="stratford.css">
 <style>
   :root{
-    --bg:#0a0e17; --panel:#131a26; --panel2:#1a2333; --border:#26324a;
-    --text:#eef3fa; --muted:#8b98ad; --gold:#f5c542; --gold2:#e0a92e;
-    --green:#3fd07a; --red:#ff5c5c; --amber:#f0a922; --blue:#5aa9ff; --purple:#b98cff;
-    --shadow:0 10px 40px rgba(0,0,0,.5);
+    --bg:#0a0d16; --panel:rgba(255,255,255,.045); --panel2:rgba(255,255,255,.06); --border:rgba(255,255,255,.09);
+    --text:#eef3fb; --muted:#94a0b8; --gold:#fbbf24; --gold2:#e0a92e;
+    --green:#34d399; --red:#f87171; --amber:#fbbf24; --blue:#22d3ee; --purple:#b98cff;
+    --shadow:0 12px 40px rgba(0,0,0,.5);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    background:radial-gradient(ellipse at top,#141b2b 0%,#0a0e17 55%);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:transparent;
     color:var(--text); line-height:1.65; padding:0 0 80px; min-height:100vh;
   }
   header{
-    text-align:center; padding:48px 24px 34px; position:relative; overflow:hidden;
+    text-align:center; padding:60px 24px 34px; position:relative; overflow:hidden;
     border-bottom:1px solid var(--border);
-    background:linear-gradient(135deg,rgba(245,197,66,.06),rgba(90,169,255,.04));
+    background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02)); backdrop-filter:blur(16px);
   }
   header::after{
     content:"$"; position:absolute; font-size:22rem; font-weight:800; color:rgba(245,197,66,.03);
     top:-60px; right:-20px; pointer-events:none; font-family:Georgia,serif;
   }
-  h1{font-size:2.2rem; font-weight:800; letter-spacing:-.5px; margin-bottom:8px;
-     background:linear-gradient(90deg,#f5c542,#e0a92e,#f5c542); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  h1{font-size:2.6rem; font-weight:800; letter-spacing:-.03em; margin-bottom:8px;
+     background:linear-gradient(120deg,#fbbf24,#ec4899,#8b5cf6); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:bdShine 7s linear infinite;}
+  @keyframes bdShine{to{background-position:200% center}}
   .sub{color:var(--muted); font-size:.98rem}
   .tagline{color:var(--gold); font-size:.9rem; margin-top:6px; font-style:italic}
   .wrap{max-width:1000px; margin:0 auto; padding:0 20px}
@@ -44,11 +46,11 @@
   .gp .v{font-size:1.02rem; margin-top:4px}
 
   nav{display:flex; gap:8px; flex-wrap:wrap; margin:20px 0 8px; position:sticky; top:0; z-index:20;
-      background:linear-gradient(180deg,#0a0e17 75%,transparent); padding:12px 0 10px;}
+      background:linear-gradient(180deg,#06080f 75%,transparent); padding:12px 0 10px;}
   .tab{background:var(--panel); border:1px solid var(--border); color:var(--muted);
        padding:9px 15px; border-radius:20px; cursor:pointer; font-size:.88rem; font-weight:600; transition:all .18s; user-select:none;}
   .tab:hover{border-color:var(--gold); color:var(--text)}
-  .tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#1a1200; border-color:transparent}
+  .tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#1a1200; border-color:transparent; box-shadow:0 6px 20px rgba(251,191,36,.35)}
 
   section{display:none; animation:fade .3s ease}
   section.active{display:block}
@@ -195,6 +197,7 @@
   </footer>
 </div>
 
+<script src="stratford.js"></script>
 <script>
 function fitStr(n){return `<span class="fit">${n}/10 <span class="fitbar"><i style="width:${n*10}%"></i></span></span>`;}
 
