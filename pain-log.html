@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pain Log — SaaS Idea Pipeline</title>
+<style>
+  :root{
+    --bg:#0a0d14; --panel:#111725; --panel2:#182034; --panel3:#1f2942; --border:#28324a;
+    --text:#eef2f9; --muted:#8794ab; --dim:#5d6880;
+    --brand:#ff4d6d; --brand2:#c026d3; --accent:#38bdf8; --gold:#fbbf24;
+    --green:#34d399; --amber:#fbbf24; --red:#f87171;
+    --shadow:0 10px 40px rgba(0,0,0,.55); --shadow-sm:0 4px 16px rgba(0,0,0,.3);
+    --r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%,rgba(192,38,211,.10),transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%,rgba(56,189,248,.08),transparent 55%),
+      #0a0d14;
+    color:var(--text); line-height:1.6; padding:0 0 100px; min-height:100vh;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px}
+
+  /* Header */
+  header{padding:44px 22px 26px; text-align:center; position:relative}
+  .badge{display:inline-block; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; font-weight:700;
+         color:var(--brand); background:rgba(255,77,109,.1); border:1px solid rgba(255,77,109,.3); padding:5px 14px; border-radius:20px; margin-bottom:14px}
+  h1{font-size:2.4rem; font-weight:800; letter-spacing:-1px;
+     background:linear-gradient(90deg,#ff4d6d,#c026d3,#38bdf8); background-size:200% auto;
+     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 6s linear infinite;}
+  @keyframes shine{to{background-position:200% center}}
+  .sub{color:var(--muted); font-size:1rem; margin-top:6px}
+  .question{margin:16px auto 0; max-width:640px; font-style:italic; color:var(--gold); font-size:.95rem;
+            background:rgba(251,191,36,.06); border:1px solid rgba(251,191,36,.25); border-radius:12px; padding:10px 18px}
+
+  /* Stats row */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:26px 0}
+  .stat{background:linear-gradient(160deg,var(--panel),var(--panel2)); border:1px solid var(--border); border-radius:var(--r);
+        padding:16px 18px; box-shadow:var(--shadow-sm); position:relative; overflow:hidden}
+  .stat::after{content:""; position:absolute; top:0; left:0; width:100%; height:3px;
+               background:linear-gradient(90deg,var(--brand),var(--brand2))}
+  .stat .n{font-size:1.9rem; font-weight:800; line-height:1}
+  .stat .l{font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:6px; font-weight:600}
+  .stat.g .n{color:var(--green)} .stat.a .n{color:var(--amber)} .stat.b .n{color:var(--accent)} .stat.p .n{color:var(--brand)}
+
+  /* Toolbar */
+  .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:22px 0 16px;
+           background:var(--panel); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; position:sticky; top:10px; z-index:30; box-shadow:var(--shadow-sm)}
+  .toolbar input.search{flex:1; min-width:180px}
+  .toolbar select, .toolbar input{
+    background:var(--bg); border:1px solid var(--border); color:var(--text); padding:9px 12px; border-radius:9px; font-size:.9rem; transition:border-color .15s}
+  .toolbar select:focus, .toolbar input:focus{outline:none; border-color:var(--accent)}
+  .btn{border:none; cursor:pointer; font-weight:700; font-size:.9rem; padding:10px 16px; border-radius:9px; transition:transform .12s,box-shadow .15s; white-space:nowrap}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#fff; box-shadow:0 4px 14px rgba(192,38,211,.35)}
+  .btn-primary:hover{box-shadow:0 6px 20px rgba(192,38,211,.5)}
+  .btn-ghost{background:var(--panel3); color:var(--text); border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--accent)}
+  .seg{display:inline-flex; background:var(--bg); border:1px solid var(--border); border-radius:9px; overflow:hidden}
+  .seg button{background:none; border:none; color:var(--muted); padding:9px 13px; cursor:pointer; font-size:.85rem; font-weight:600}
+  .seg button.active{background:var(--panel3); color:var(--text)}
+
+  /* Cards grid */
+  #grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px}
+  .pain{background:linear-gradient(165deg,var(--panel),var(--panel2)); border:1px solid var(--border); border-radius:var(--r);
+        padding:18px; box-shadow:var(--shadow-sm); position:relative; transition:transform .18s,border-color .18s,box-shadow .18s; display:flex; flex-direction:column; gap:10px}
+  .pain:hover{transform:translateY(-4px); border-color:var(--accent); box-shadow:var(--shadow)}
+  .pain .top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
+  .pain .ind{font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--accent);
+             background:rgba(56,189,248,.1); padding:4px 10px; border-radius:8px}
+  .pain .score-badge{font-size:1.3rem; font-weight:800; line-height:1; text-align:right}
+  .pain .score-badge small{display:block; font-size:.6rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.5px}
+  .pain h3{font-size:1.08rem; font-weight:700; line-height:1.3}
+  .pain .desc{font-size:.88rem; color:var(--muted)}
+  .pain .time{font-size:.82rem; color:var(--gold); display:flex; align-items:center; gap:6px; font-weight:600}
+  .pain .workaround{font-size:.8rem; color:var(--dim)}
+  .pain .workaround b{color:var(--muted)}
+  .scores{display:flex; gap:6px; flex-wrap:wrap; margin-top:2px}
+  .schip{font-size:.68rem; font-weight:700; padding:3px 8px; border-radius:7px; background:var(--panel3); color:var(--muted)}
+  .schip b{color:var(--text)}
+  .pain .footer{display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:8px; border-top:1px solid var(--border)}
+  .heard{font-size:.78rem; font-weight:700}
+  .heard.valid{color:var(--green)} .heard.raw{color:var(--amber)}
+  .actions{display:flex; gap:6px}
+  .iconbtn{background:var(--panel3); border:1px solid var(--border); color:var(--muted); cursor:pointer; border-radius:7px; padding:5px 9px; font-size:.8rem; transition:all .15s}
+  .iconbtn:hover{color:var(--text); border-color:var(--accent)}
+  .iconbtn.del:hover{color:var(--red); border-color:var(--red)}
+  .tier{position:absolute; top:0; right:0; width:0; height:0; border-style:solid; border-width:0 34px 34px 0; border-color:transparent}
+  .tier.hot{border-right-color:var(--brand)}
+  .tier.warm{border-right-color:var(--amber)}
+  .tier.cold{border-right-color:var(--dim)}
+
+  .empty{grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted)}
+  .empty .big{font-size:3rem; margin-bottom:10px}
+
+  /* Modal */
+  .overlay{position:fixed; inset:0; background:rgba(5,7,12,.72); backdrop-filter:blur(4px); display:none; align-items:flex-start; justify-content:center; z-index:100; padding:40px 16px; overflow-y:auto}
+  .overlay.show{display:flex}
+  .modal{background:linear-gradient(165deg,var(--panel2),var(--panel)); border:1px solid var(--border); border-radius:18px; width:100%; max-width:560px; box-shadow:var(--shadow); animation:pop .25s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(20px) scale(.97)}to{opacity:1; transform:none}}
+  .modal-head{padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center}
+  .modal-head h2{font-size:1.2rem}
+  .modal-head .x{background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer; line-height:1}
+  .modal-body{padding:22px 24px}
+  .fg{margin-bottom:16px}
+  .fg label{display:block; font-size:.82rem; font-weight:700; color:var(--muted); margin-bottom:6px}
+  .fg input, .fg textarea, .fg select{width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); padding:11px 13px; border-radius:9px; font-size:.95rem; font-family:inherit; transition:border-color .15s}
+  .fg input:focus, .fg textarea:focus, .fg select:focus{outline:none; border-color:var(--accent)}
+  .fg textarea{resize:vertical; min-height:64px}
+  .fg-row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .slider-row{display:flex; align-items:center; gap:12px; margin-bottom:12px}
+  .slider-row label{flex:0 0 130px; font-size:.85rem; font-weight:600; color:var(--muted)}
+  .slider-row input[type=range]{flex:1; accent-color:var(--brand)}
+  .slider-row .val{flex:0 0 28px; text-align:center; font-weight:800; font-size:1.1rem; color:var(--brand)}
+  .live-score{background:var(--panel3); border-radius:10px; padding:12px 16px; text-align:center; margin-top:8px}
+  .live-score .s{font-size:2rem; font-weight:800; color:var(--gold)} .live-score .lbl{font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px}
+  .modal-foot{padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px}
+
+  /* toast */
+  .toast{position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--panel3); border:1px solid var(--border); color:var(--text); padding:12px 22px; border-radius:12px; box-shadow:var(--shadow); font-size:.9rem; font-weight:600; opacity:0; transition:all .3s; z-index:200}
+  .toast.show{transform:translateX(-50%) translateY(0); opacity:1}
+
+  .hint{font-size:.78rem; color:var(--dim); margin-top:4px}
+  footer{text-align:center; color:var(--dim); font-size:.8rem; margin-top:40px}
+  @media(max-width:600px){h1{font-size:1.7rem}.fg-row{grid-template-columns:1fr}.slider-row label{flex-basis:90px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="badge">SaaS Idea Pipeline</div>
+    <h1>💢 The Pain Log</h1>
+    <div class="sub">Every complaint you hear is a clue. The ones you hear <em>three times</em> are a business.</div>
+    <div class="question">"What's the most annoying part of your week that has nothing to do with getting customers?"</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat p"><div class="n" id="stTotal">0</div><div class="l">Pains logged</div></div>
+    <div class="stat g"><div class="n" id="stValid">0</div><div class="l">Validated (3+ heard)</div></div>
+    <div class="stat b"><div class="n" id="stInd">0</div><div class="l">Industries watched</div></div>
+    <div class="stat a"><div class="n" id="stTop">—</div><div class="l">Top opportunity score</div></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn btn-primary" id="addBtn">+ Add Pain</button>
+    <input class="search" id="search" placeholder="🔍 Search pains, industries, workarounds...">
+    <select id="filterInd"><option value="">All industries</option></select>
+    <select id="sortBy">
+      <option value="score">Sort: Opportunity score</option>
+      <option value="heard">Sort: Times heard</option>
+      <option value="time">Sort: Time wasted</option>
+      <option value="newest">Sort: Newest</option>
+    </select>
+    <div class="seg" id="tierSeg">
+      <button data-t="all" class="active">All</button>
+      <button data-t="valid">Validated</button>
+      <button data-t="raw">Raw</button>
+    </div>
+    <button class="btn btn-ghost" id="exportBtn">⬇ Export</button>
+    <button class="btn btn-ghost" id="importBtn">⬆ Import</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+  </div>
+
+  <div id="grid"></div>
+
+  <footer>💢 The Pain Log · Built by Jarvis for Ethan · Data saves automatically in your browser · Export regularly to back up</footer>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modalTitle">Add a Pain</h2><button class="x" id="closeModal">&times;</button></div>
+    <div class="modal-body">
+      <div class="fg">
+        <label>Industry / niche</label>
+        <input id="fInd" list="indList" placeholder="e.g. Roofers, Med spas, Dentists, HVAC...">
+        <datalist id="indList"></datalist>
+      </div>
+      <div class="fg">
+        <label>The pain (short title)</label>
+        <input id="fTitle" placeholder="e.g. Rebuilding estimates by hand for every job">
+      </div>
+      <div class="fg">
+        <label>Details — what exactly is painful?</label>
+        <textarea id="fDesc" placeholder="Describe the problem in their words..."></textarea>
+      </div>
+      <div class="fg-row">
+        <div class="fg"><label>Time wasted</label><input id="fTime" placeholder="e.g. 2–3 hrs / estimate"></div>
+        <div class="fg"><label>Times heard</label><input id="fHeard" type="number" min="0" value="1"></div>
+      </div>
+      <div class="fg">
+        <label>Current workaround (what they do now)</label>
+        <input id="fWork" placeholder="e.g. Excel + guessing">
+      </div>
+
+      <div class="fg">
+        <label>Score it (1 = low, 5 = high)</label>
+        <div class="slider-row"><label>Frequency</label><input type="range" id="sFreq" min="1" max="5" value="3"><span class="val" id="vFreq">3</span></div>
+        <div class="slider-row"><label>Intensity (hate)</label><input type="range" id="sInt" min="1" max="5" value="3"><span class="val" id="vInt">3</span></div>
+        <div class="slider-row"><label>Reach (market)</label><input type="range" id="sReach" min="1" max="5" value="3"><span class="val" id="vReach">3</span></div>
+        <div class="slider-row"><label>Willingness to pay</label><input type="range" id="sWtp" min="1" max="5" value="3"><span class="val" id="vWtp">3</span></div>
+        <div class="live-score"><div class="s" id="liveScore">81</div><div class="lbl">Opportunity Score (max 625)</div></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="cancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="saveBtn">Save Pain</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const KEY='painlog.v1';
+let data=[]; let editId=null; let tierFilter='all';
+
+// ---- seed (only first load) ----
+const SEED=[
+  {id:uid(),ind:'Example',title:'Roofers rebuild estimates by hand for every job',desc:'Every quote is built from scratch in a spreadsheet; error-prone and slow.',time:'2–3 hrs / estimate',work:'Excel + guessing',heard:0,freq:5,int:4,reach:5,wtp:4,ts:Date.now()}
+];
+function uid(){return Math.random().toString(36).slice(2,9)}
+function load(){
+  try{const s=localStorage.getItem(KEY); data = s?JSON.parse(s):SEED.slice();}catch(e){data=SEED.slice();}
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));}
+function score(p){return p.freq*p.int*p.reach*p.wtp;}
+function tierOf(s){return s>=250?'hot':s>=100?'warm':'cold';}
+
+function toast(msg){const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+
+// ---- render ----
+function render(){
+  const q=$('search').value.toLowerCase();
+  const fi=$('filterInd').value;
+  let rows=data.filter(p=>{
+    if(fi && p.ind!==fi) return false;
+    if(tierFilter==='valid' && (p.heard||0)<3) return false;
+    if(tierFilter==='raw' && (p.heard||0)>=3) return false;
+    if(q){const hay=(p.ind+' '+p.title+' '+p.desc+' '+p.work).toLowerCase(); if(!hay.includes(q)) return false;}
+    return true;
+  });
+  const sb=$('sortBy').value;
+  rows.sort((a,b)=>{
+    if(sb==='score') return score(b)-score(a);
+    if(sb==='heard') return (b.heard||0)-(a.heard||0);
+    if(sb==='newest') return b.ts-a.ts;
+    if(sb==='time') return (b.time||'').length-(a.time||'').length;
+    return 0;
+  });
+
+  const grid=$('grid');
+  if(!rows.length){
+    grid.innerHTML=`<div class="empty"><div class="big">🕵️</div><p>No pains match. Add the complaints you hear from clients — the repeated ones become your SaaS ideas.</p></div>`;
+  } else {
+    grid.innerHTML=rows.map(p=>{
+      const s=score(p); const t=tierOf(s);
+      const valid=(p.heard||0)>=3;
+      return `<div class="pain">
+        <div class="tier ${t}"></div>
+        <div class="top">
+          <span class="ind">${esc(p.ind||'—')}</span>
+          <span class="score-badge" style="color:${t==='hot'?'var(--brand)':t==='warm'?'var(--amber)':'var(--dim)'}">${s}<small>score</small></span>
+        </div>
+        <h3>${esc(p.title||'Untitled pain')}</h3>
+        ${p.desc?`<div class="desc">${esc(p.desc)}</div>`:''}
+        ${p.time?`<div class="time">⏱ ${esc(p.time)}</div>`:''}
+        ${p.work?`<div class="workaround"><b>Now:</b> ${esc(p.work)}</div>`:''}
+        <div class="scores">
+          <span class="schip">Freq <b>${p.freq}</b></span>
+          <span class="schip">Hate <b>${p.int}</b></span>
+          <span class="schip">Reach <b>${p.reach}</b></span>
+          <span class="schip">Pay <b>${p.wtp}</b></span>
+        </div>
+        <div class="footer">
+          <span class="heard ${valid?'valid':'raw'}">${valid?'✓ Validated':'○ Raw'} · heard ${p.heard||0}×</span>
+          <span class="actions">
+            <button class="iconbtn" onclick="bump('${p.id}')" title="Heard it again (+1)">+1 heard</button>
+            <button class="iconbtn" onclick="editP('${p.id}')" title="Edit">✎</button>
+            <button class="iconbtn del" onclick="delP('${p.id}')" title="Delete">🗑</button>
+          </span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  updateStats(); refreshIndustries();
+}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function updateStats(){
+  $('stTotal').textContent=data.length;
+  $('stValid').textContent=data.filter(p=>(p.heard||0)>=3).length;
+  $('stInd').textContent=new Set(data.map(p=>p.ind).filter(Boolean)).size;
+  $('stTop').textContent=data.length?Math.max(...data.map(score)):'—';
+}
+function refreshIndustries(){
+  const inds=[...new Set(data.map(p=>p.ind).filter(Boolean))].sort();
+  const cur=$('filterInd').value;
+  $('filterInd').innerHTML='<option value="">All industries</option>'+inds.map(i=>`<option ${i===cur?'selected':''}>${esc(i)}</option>`).join('');
+  $('indList').innerHTML=inds.map(i=>`<option value="${esc(i)}">`).join('');
+}
+
+// ---- actions ----
+window.bump=id=>{const p=data.find(x=>x.id===id); if(p){p.heard=(p.heard||0)+1; save(); render(); toast(p.heard>=3?'✓ Now validated!':'+1 heard');}};
+window.delP=id=>{if(confirm('Delete this pain?')){data=data.filter(x=>x.id!==id); save(); render(); toast('Deleted');}};
+window.editP=id=>{const p=data.find(x=>x.id===id); if(!p)return; editId=id; openModal(p);};
+
+function openModal(p){
+  $('modalTitle').textContent=p?'Edit Pain':'Add a Pain';
+  $('fInd').value=p?p.ind:''; $('fTitle').value=p?p.title:''; $('fDesc').value=p?p.desc:'';
+  $('fTime').value=p?p.time:''; $('fWork').value=p?p.work:''; $('fHeard').value=p?p.heard:1;
+  ['Freq','Int','Reach','Wtp'].forEach((k,i)=>{const v=p?[p.freq,p.int,p.reach,p.wtp][i]:3; $('s'+k).value=v; $('v'+k).textContent=v;});
+  liveScore();
+  $('overlay').classList.add('show');
+}
+function closeModal(){$('overlay').classList.remove('show'); editId=null;}
+function liveScore(){
+  const f=+$('sFreq').value,i=+$('sInt').value,r=+$('sReach').value,w=+$('sWtp').value;
+  $('liveScore').textContent=f*i*r*w;
+}
+['Freq','Int','Reach','Wtp'].forEach(k=>{$('s'+k).addEventListener('input',()=>{$('v'+k).textContent=$('s'+k).value; liveScore();});});
+
+$('saveBtn').onclick=()=>{
+  const rec={
+    ind:$('fInd').value.trim(), title:$('fTitle').value.trim(), desc:$('fDesc').value.trim(),
+    time:$('fTime').value.trim(), work:$('fWork').value.trim(), heard:+$('fHeard').value||0,
+    freq:+$('sFreq').value, int:+$('sInt').value, reach:+$('sReach').value, wtp:+$('sWtp').value
+  };
+  if(!rec.title){toast('Give it a title first'); return;}
+  if(editId){const p=data.find(x=>x.id===editId); Object.assign(p,rec);}
+  else {rec.id=uid(); rec.ts=Date.now(); data.unshift(rec);}
+  save(); render(); closeModal(); toast(editId?'Updated':'Pain added');
+};
+
+$('addBtn').onclick=()=>{editId=null; openModal(null);};
+$('closeModal').onclick=closeModal; $('cancelBtn').onclick=closeModal;
+$('overlay').onclick=e=>{if(e.target===$('overlay'))closeModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+$('search').oninput=render; $('filterInd').onchange=render; $('sortBy').onchange=render;
+$('tierSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  $('tierSeg').querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); tierFilter=b.dataset.t; render();
+});
+
+// export / import
+$('exportBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='pain-log-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); toast('Exported JSON');
+};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f)return; const r=new FileReader();
+  r.onload=()=>{try{const arr=JSON.parse(r.result); if(Array.isArray(arr)){data=arr.map(p=>({id:p.id||uid(),ts:p.ts||Date.now(),...p})); save(); render(); toast('Imported '+arr.length+' pains');}}catch(err){toast('Invalid file');}};
+  r.readAsText(f);
+};
+
+load(); render();
+</script>
+</body>
+</html>

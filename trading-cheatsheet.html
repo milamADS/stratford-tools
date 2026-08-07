@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Technical Analysis — Cheat Sheet</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2430; --border:#2a3441;
+    --text:#e6edf3; --muted:#8b98a5; --accent:#3fb950; --accent2:#58a6ff;
+    --red:#f85149; --green:#3fb950; --amber:#d29922; --purple:#bc8cff;
+    --shadow:0 8px 30px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:linear-gradient(160deg,#0d1117 0%,#0a0e14 100%);
+    color:var(--text); line-height:1.6; padding:0 0 80px;
+  }
+  header{
+    background:linear-gradient(135deg,#161b22 0%,#1c2733 100%);
+    border-bottom:1px solid var(--border); padding:40px 24px 30px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  header::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(63,185,80,.04) 39px,transparent 40px);
+    pointer-events:none;
+  }
+  h1{font-size:2rem; font-weight:700; letter-spacing:-.5px; margin-bottom:6px;
+     background:linear-gradient(90deg,#3fb950,#58a6ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .sub{color:var(--muted); font-size:.95rem}
+  .wrap{max-width:960px; margin:0 auto; padding:0 20px}
+
+  /* Disclaimer */
+  .disclaimer{
+    background:rgba(210,153,34,.08); border:1px solid rgba(210,153,34,.35);
+    border-left:4px solid var(--amber); border-radius:10px; padding:14px 18px;
+    margin:24px 0; font-size:.9rem; color:#e8d9b0;
+  }
+  .disclaimer strong{color:var(--amber)}
+
+  /* Nav tabs */
+  nav{display:flex; gap:8px; flex-wrap:wrap; margin:24px 0 8px; position:sticky; top:0;
+      background:linear-gradient(180deg,#0d1117 70%,transparent); padding:12px 0 10px; z-index:20;}
+  .tab{
+    background:var(--panel); border:1px solid var(--border); color:var(--muted);
+    padding:9px 16px; border-radius:20px; cursor:pointer; font-size:.9rem; font-weight:600;
+    transition:all .18s; user-select:none;
+  }
+  .tab:hover{border-color:var(--accent2); color:var(--text)}
+  .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#06131f; border-color:transparent}
+
+  section{display:none; animation:fade .3s ease}
+  section.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:none}}
+
+  h2{font-size:1.4rem; margin:18px 0 14px; display:flex; align-items:center; gap:10px}
+  h2 .ic{font-size:1.5rem}
+  h3{font-size:1.05rem; margin:20px 0 8px; color:var(--accent2)}
+  p{margin-bottom:10px}
+  .muted{color:var(--muted)}
+
+  /* Collapsible */
+  .acc{border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; background:var(--panel)}
+  .acc-head{padding:14px 18px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+            font-weight:600; transition:background .15s}
+  .acc-head:hover{background:var(--panel2)}
+  .acc-head .arrow{transition:transform .25s; color:var(--muted)}
+  .acc.open .arrow{transform:rotate(90deg)}
+  .acc-body{max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 18px}
+  .acc.open .acc-body{max-height:800px; padding:0 18px 16px}
+
+  /* Pattern cards */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-top:14px}
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px;
+    transition:transform .18s, border-color .18s, box-shadow .18s; cursor:default;
+  }
+  .card:hover{transform:translateY(-3px); border-color:var(--accent2); box-shadow:var(--shadow)}
+  .card h4{font-size:1rem; margin-bottom:6px; display:flex; align-items:center; gap:8px}
+  .card .sig{font-size:.8rem; font-weight:700; padding:2px 8px; border-radius:10px; display:inline-block; margin-bottom:8px}
+  .bull{background:rgba(63,185,80,.15); color:var(--green)}
+  .bear{background:rgba(248,81,73,.15); color:var(--red)}
+  .neut{background:rgba(139,152,165,.15); color:var(--muted)}
+  .card p{font-size:.85rem; color:var(--muted); margin:0}
+  .card .looks{font-size:.82rem; color:var(--text); margin-bottom:6px}
+
+  /* candle svg */
+  .candle-svg{display:block; margin:0 auto 10px}
+
+  /* Calculators */
+  .calc{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px; margin:18px 0; box-shadow:var(--shadow)}
+  .calc h3{margin-top:0; color:var(--text); display:flex; align-items:center; gap:8px}
+  .field{display:flex; flex-direction:column; gap:5px; margin-bottom:14px}
+  .field label{font-size:.85rem; color:var(--muted); font-weight:600}
+  .field input, .field select{
+    background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text);
+    padding:10px 12px; font-size:1rem; transition:border-color .15s;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--accent2)}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .result{
+    background:linear-gradient(135deg,rgba(63,185,80,.1),rgba(88,166,255,.08));
+    border:1px solid var(--border); border-radius:10px; padding:16px; margin-top:6px;
+  }
+  .result .big{font-size:1.8rem; font-weight:700; color:var(--accent)}
+  .result .lbl{font-size:.82rem; color:var(--muted)}
+  .result-row{display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:1px dashed var(--border)}
+  .result-row:last-child{border-bottom:none}
+  .rr-verdict{margin-top:10px; padding:8px 12px; border-radius:8px; font-size:.9rem; font-weight:600}
+
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:.88rem}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--border)}
+  th{color:var(--accent2); font-weight:700}
+  tr:hover td{background:var(--panel2)}
+
+  .checklist{list-style:none; counter-reset:step}
+  .checklist li{
+    counter-increment:step; padding:12px 14px 12px 52px; position:relative; margin-bottom:8px;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px; font-size:.92rem;
+  }
+  .checklist li::before{
+    content:counter(step); position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#06131f; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:.9rem;
+  }
+
+  .pill{display:inline-block; padding:2px 9px; border-radius:12px; font-size:.78rem; font-weight:600; margin:2px}
+  .pill.g{background:rgba(63,185,80,.15); color:var(--green)}
+  .pill.r{background:rgba(248,81,73,.15); color:var(--red)}
+  .pill.a{background:rgba(210,153,34,.15); color:var(--amber)}
+
+  footer{text-align:center; color:var(--muted); font-size:.82rem; margin-top:40px; padding:20px}
+  code{background:var(--panel2); padding:2px 6px; border-radius:5px; font-size:.85em; color:var(--purple)}
+
+  ul.clean{list-style:none; margin:8px 0}
+  ul.clean li{padding:5px 0 5px 22px; position:relative; font-size:.92rem}
+  ul.clean li::before{content:"▸"; position:absolute; left:0; color:var(--accent)}
+
+  @media(max-width:600px){.row{grid-template-columns:1fr}h1{font-size:1.5rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>📈 Trading Technical Analysis</h1>
+    <div class="sub">Interactive Cheat Sheet · Prepared for Ethan · Educational only</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="disclaimer">
+    <strong>⚠️ Not financial advice.</strong> Educational only. Trading is risky — most beginners lose money.
+    Patterns are probabilistic, not guarantees. Never risk money you can't afford to lose. Start tiny or on a demo account.
+  </div>
+
+  <nav>
+    <div class="tab active" data-tab="patterns">🕯️ Candlesticks</div>
+    <div class="tab" data-tab="entry">🎯 Entries</div>
+    <div class="tab" data-tab="indicators">📊 Indicators</div>
+    <div class="tab" data-tab="timing">⏰ Timing</div>
+    <div class="tab" data-tab="risk">🛡️ Risk</div>
+    <div class="tab" data-tab="calc">🧮 Calculators</div>
+    <div class="tab" data-tab="checklist">✅ Checklist</div>
+  </nav>
+
+  <!-- PATTERNS -->
+  <section id="patterns" class="active">
+    <h2><span class="ic">🕯️</span>Candlestick Patterns</h2>
+    <p class="muted">Each candle = one time period. <span class="pill g">Green</span> close &gt; open (buyers won). <span class="pill r">Red</span> close &lt; open (sellers won). Long body = strong pressure · short body = indecision · long wick = rejection at that level. Reversal patterns are strongest <em>after</em> a trend and when the next candle confirms.</p>
+    <div class="grid" id="patternGrid"></div>
+    <div class="disclaimer" style="margin-top:18px"><strong>Reality check:</strong> patterns lose potency within ~3–5 candles and fail often. One clue only — confirm with trend, support/resistance, and volume.</div>
+  </section>
+
+  <!-- ENTRY -->
+  <section id="entry">
+    <h2><span class="ic">🎯</span>When to Enter</h2>
+    <p class="muted">Good entries come from <strong>confluence</strong> — several signals agreeing — not one magic trigger.</p>
+
+    <h3>Support &amp; Resistance (the foundation)</h3>
+    <ul class="clean">
+      <li><strong>Support</strong> = a "floor" where falling prices tend to stop (buyers step in).</li>
+      <li><strong>Resistance</strong> = a "ceiling" where rising prices stall (sellers step in).</li>
+      <li>Longer time frame = more significant level. At a level, price either <strong>bounces</strong> or <strong>breaks</strong> — both tradable.</li>
+    </ul>
+
+    <h3>The 4 Entry Approaches</h3>
+    <div class="acc"><div class="acc-head">1 · Bounce off support/resistance <span class="arrow">▶</span></div>
+      <div class="acc-body"><p>Buy near tested support (expect a bounce), sell/short near resistance. Advantage: place a tight stop just beyond the level, so being wrong costs little.</p></div></div>
+    <div class="acc"><div class="acc-head">2 · Breakout <span class="arrow">▶</span></div>
+      <div class="acc-body"><p>Enter when price decisively breaks resistance (up) or support (down), ideally on <strong>rising volume</strong>. High volume = "real"; low-volume breakouts often fail ("fakeouts").</p></div></div>
+    <div class="acc"><div class="acc-head">3 · Pullback / retest <span class="arrow">▶</span></div>
+      <div class="acc-body"><p>After a breakout, price often returns to retest the broken level — old resistance becomes new support. Entering the pullback = better price + tighter stop than chasing.</p></div></div>
+    <div class="acc"><div class="acc-head">4 · Trend confirmation <span class="arrow">▶</span></div>
+      <div class="acc-body"><p>"The trend is your friend." In an uptrend, buy pullbacks; in a downtrend, sell rallies. Fighting a strong trend is a classic beginner mistake.</p></div></div>
+  </section>
+
+  <!-- INDICATORS -->
+  <section id="indicators">
+    <h2><span class="ic">📊</span>Indicators (Plain English)</h2>
+    <p class="muted">Indicators are <strong>derived from price</strong> — they lag and confirm; they don't predict. Use together, never alone.</p>
+    <table>
+      <tr><th>Indicator</th><th>What it tells you</th><th>Key signal</th></tr>
+      <tr><td><strong>Moving Avg (MA)</strong></td><td>Average price over N periods (9/20/50/100/200). Acts as dynamic support/resistance.</td><td>Price above rising MA = uptrend bias. <span class="pill g">Golden cross</span> (short crosses above long) bullish; <span class="pill r">death cross</span> bearish.</td></tr>
+      <tr><td><strong>RSI</strong></td><td>Momentum 0–100. Above 70 overbought, below 30 oversold.</td><td>Some buy on cross back up through 30, sell on cross down through 70. <span class="pill a">Warning:</span> in strong trends it can stay stretched for a long time.</td></tr>
+      <tr><td><strong>MACD</strong></td><td>Momentum &amp; trend from two MAs + a signal line.</td><td>MACD above signal = bullish momentum; below = bearish. Divergence from price warns of weakening.</td></tr>
+      <tr><td><strong>Volume</strong></td><td>The "conviction meter" — shares/contracts traded.</td><td>Moves on high volume are more trustworthy. Rising price on falling volume = running out of fuel.</td></tr>
+    </table>
+    <div class="calc" style="margin-top:8px">
+      <h3>💡 Confluence example</h3>
+      <p class="muted" style="margin:0">Price pulls back to a rising 50-day MA that lines up with prior support · RSI turning up off oversold · a bullish engulfing candle forms on above-average volume. Several signals agreeing = higher-quality setup than any one alone.</p>
+    </div>
+  </section>
+
+  <!-- TIMING -->
+  <section id="timing">
+    <h2><span class="ic">⏰</span>Best Time to Trade</h2>
+    <h3>Stocks (U.S. 9:30–16:00 ET)</h3>
+    <table>
+      <tr><th>Window</th><th>Character</th></tr>
+      <tr><td>Open 9:30–10:30</td><td>Busiest, most volatile — most opportunity <em>and</em> risk. Many beginners avoid the first few minutes.</td></tr>
+      <tr><td>Midday 11:30–14:00</td><td>Calmest, lowest volume, "drifty." Tight ranges, fewer clean setups, worse fills.</td></tr>
+      <tr><td>Close 15:00–16:00</td><td>Surge as institutions/day traders position for end of day. Active but risky.</td></tr>
+    </table>
+    <p class="muted">Volume &amp; volatility concentrate at open/close = liquidity = tighter spreads. The dead middle can hurt you with poor fills.</p>
+    <h3>Crypto (24/7/365)</h3>
+    <ul class="clean">
+      <li>Never closes — opportunity anytime, but no break; big moves happen while you sleep.</li>
+      <li>Liquidity still varies: deeper during US morning / European afternoon overlap, thin late night &amp; weekends.</li>
+      <li>Low-liquidity windows = sharp "wicky" moves. Stops &amp; alerts matter even more.</li>
+    </ul>
+    <h3>General principles</h3>
+    <ul class="clean">
+      <li>Avoid low-liquidity times (wider spreads, slippage).</li>
+      <li>Trade an asset during its "prime time."</li>
+      <li>Be cautious around major news (earnings, Fed, data releases) — spreads widen, beginners get chopped up.</li>
+      <li>You can't reliably time exact tops/bottoms. Don't build a strategy on calendar superstition.</li>
+    </ul>
+  </section>
+
+  <!-- RISK -->
+  <section id="risk">
+    <h2><span class="ic">🛡️</span>Risk Management <span class="pill a">Most important</span></h2>
+    <p class="muted">Great entries with bad risk management still blow up accounts. <em>"Plan the trade, and trade the plan."</em></p>
+
+    <h3>Stop Losses</h3>
+    <ul class="clean">
+      <li>Pre-decided exit price for a losing trade — set <strong>before</strong> you enter.</li>
+      <li>Defeats the "it'll come back" mentality — the #1 beginner account-killer.</li>
+      <li>Place just <em>beyond</em> a logical level (below support for a long, above resistance for a short). Give it room for noise, not so much the loss is huge.</li>
+      <li>Also plan a <strong>take-profit</strong> target (often the next S/R).</li>
+    </ul>
+
+    <h3>Position Sizing — the 1% Rule</h3>
+    <p>Never risk more than <strong>1%</strong> of your account per trade (2% max if you can afford it). On a $10,000 account that's <strong>$100 of risk</strong> — the most you'd lose if stopped out, not the position size.</p>
+    <p class="muted">Sizing: dollar risk ÷ per-share risk = shares. e.g. $100 ÷ ($50 entry − $48 stop = $2) = <strong>50 shares</strong>. → <span class="pill g">Try the calculator tab</span></p>
+
+    <h3>Risk / Reward</h3>
+    <ul class="clean">
+      <li>Risking $100 to make $300 = <strong>1:3</strong>.</li>
+      <li>Good R:R means you can be wrong more often than right and still profit — at 1:2 you only need ~34% win rate to break even.</li>
+      <li>Many won't take a setup below <strong>1:2</strong> (some insist on 1:3).</li>
+    </ul>
+
+    <h3>Habits that keep you alive</h3>
+    <ul class="clean">
+      <li>Pre-decide entry, stop &amp; target — no improvising once emotions kick in.</li>
+      <li>Don't over-leverage — it magnifies losses and can wipe you in one move.</li>
+      <li>Don't revenge-trade — chasing losses with bigger bets kills accounts.</li>
+      <li>Keep a trading journal — log setup, size, stop, result &amp; <em>why</em>; review it.</li>
+      <li>Use a demo/paper account first. Accept losses as part of the game.</li>
+    </ul>
+  </section>
+
+  <!-- CALCULATORS -->
+  <section id="calc">
+    <h2><span class="ic">🧮</span>Interactive Calculators</h2>
+
+    <div class="calc">
+      <h3>📏 Position Size Calculator (1% Rule)</h3>
+      <div class="row">
+        <div class="field"><label>Account size ($)</label><input type="number" id="acct" value="10000"></div>
+        <div class="field"><label>Risk per trade (%)</label><input type="number" id="riskpct" value="1" step="0.1"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Entry price ($)</label><input type="number" id="entry" value="50" step="0.01"></div>
+        <div class="field"><label>Stop-loss price ($)</label><input type="number" id="stop" value="48" step="0.01"></div>
+      </div>
+      <div class="result">
+        <div class="result-row"><span class="lbl">Dollar risk (max loss)</span><span class="big" id="dollarRisk">$100</span></div>
+        <div class="result-row"><span class="lbl">Risk per share</span><span id="perShare">$2.00</span></div>
+        <div class="result-row"><span class="lbl">Position size</span><span class="big" id="shares">50 shares</span></div>
+        <div class="result-row"><span class="lbl">Total position value</span><span id="posVal">$2,500</span></div>
+      </div>
+    </div>
+
+    <div class="calc">
+      <h3>⚖️ Risk / Reward Calculator</h3>
+      <div class="row">
+        <div class="field"><label>Entry price ($)</label><input type="number" id="rrEntry" value="50" step="0.01"></div>
+        <div class="field"><label>Stop-loss ($)</label><input type="number" id="rrStop" value="48" step="0.01"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Take-profit target ($)</label><input type="number" id="rrTarget" value="56" step="0.01"></div>
+        <div class="field"><label>Direction</label><select id="rrDir"><option value="long">Long (buy)</option><option value="short">Short (sell)</option></select></div>
+      </div>
+      <div class="result">
+        <div class="result-row"><span class="lbl">Risk</span><span id="rrRisk">$2.00</span></div>
+        <div class="result-row"><span class="lbl">Reward</span><span id="rrReward">$6.00</span></div>
+        <div class="result-row"><span class="lbl">Risk / Reward ratio</span><span class="big" id="rrRatio">1 : 3.0</span></div>
+        <div class="result-row"><span class="lbl">Breakeven win rate needed</span><span id="rrWin">25%</span></div>
+        <div class="rr-verdict" id="rrVerdict"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section id="checklist">
+    <h2><span class="ic">✅</span>Beginner Pre-Trade Checklist</h2>
+    <p class="muted">Run through this before every trade. Click to check off.</p>
+    <ol class="checklist" id="checklistList">
+      <li data-c>Context — what's the overall trend? Am I trading with it or against it?</li>
+      <li data-c>Level — is price at meaningful support/resistance?</li>
+      <li data-c>Signal — do candlestick + indicator(s) + volume agree (confluence)?</li>
+      <li data-c>Risk first — where's my stop? Position size at 1%? R:R at least ~1:2?</li>
+      <li data-c>Timing — is this a reasonably liquid time to trade this asset?</li>
+      <li data-c>Plan the exit — both stop and target set <em>before</em> clicking buy.</li>
+      <li data-c>Journal it — then review honestly.</li>
+    </ol>
+    <div class="disclaimer" style="margin-top:20px">
+      <strong>Final word:</strong> technical analysis is a framework, not a crystal ball. The biggest edge a beginner can build is <strong>discipline in risk management</strong> — small size, defined stops, favorable R:R, no emotional trading. Learn slowly, keep positions tiny, expect to lose while learning.
+    </div>
+  </section>
+
+  <footer>
+    📈 Trading Technical Analysis Cheat Sheet · Educational content only — not financial advice.<br>
+    Sourced from Investopedia &amp; standard TA material · Built by Jarvis for Ethan
+  </footer>
+</div>
+
+<script>
+// ---- Tabs ----
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+// ---- Accordions ----
+document.querySelectorAll('.acc-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
+});
+
+// ---- Pattern cards + mini candle SVGs ----
+function candle(bodyTop,bodyH,wickTop,wickBot,color){
+  // coords in 40x70 viewbox, x center 20
+  const wTop=wickTop, wBot=wickBot;
+  return `<svg class="candle-svg" width="40" height="70" viewBox="0 0 40 70">
+    <line x1="20" y1="${wTop}" x2="20" y2="${wBot}" stroke="${color}" stroke-width="2"/>
+    <rect x="10" y="${bodyTop}" width="20" height="${bodyH}" fill="${color}" rx="2"/>
+  </svg>`;
+}
+const G='#3fb950',R='#f85149';
+const patterns=[
+  {n:'Doji',svg:candle(34,2,8,62,'#8b98a5'),cls:'neut',sig:'Indecision',looks:'Open ≈ close; body is a tiny cross with wicks either side.',p:'Bulls and bears to a standstill. Early warning a trend may be tiring. Meaningless alone — watch what follows.'},
+  {n:'Spinning Top',svg:candle(28,14,10,60,'#8b98a5'),cls:'neut',sig:'Indecision',looks:'Small body, wicks both sides.',p:'Loss of momentum. A pause before the battle resolves.'},
+  {n:'Hammer',svg:candle(10,12,8,60,G),cls:'bull',sig:'Bullish reversal',looks:'Small body near top, long lower wick (~2× body). After a downtrend.',p:'Sellers pushed down, buyers slammed it back up — first sign of strong buying. Confirm with a green candle next.'},
+  {n:'Hanging Man',svg:candle(10,12,8,60,R),cls:'bear',sig:'Bearish reversal',looks:'Same shape as hammer, but after an uptrend.',p:'First time sellers showed up in force during the rally. Needs a red confirmation candle.'},
+  {n:'Shooting Star',svg:candle(48,12,10,62,R),cls:'bear',sig:'Bearish reversal',looks:'Small body near bottom, long upper wick. After an uptrend.',p:'Buyers tried higher, got rejected and slammed down — momentum failing at the top.'},
+  {n:'Marubozu',svg:candle(8,54,8,62,G),cls:'bull',sig:'Strong momentum',looks:'Long body, little/no wick.',p:'Relentless conviction. Green = relentless buying (open at low, close at high); red = relentless selling.'},
+  {n:'Bullish Engulfing',svg:`<svg class="candle-svg" width="52" height="70" viewBox="0 0 52 70"><line x1="14" y1="26" x2="14" y2="46" stroke="${R}" stroke-width="2"/><rect x="7" y="30" width="14" height="10" fill="${R}" rx="2"/><line x1="36" y1="12" x2="36" y2="60" stroke="${G}" stroke-width="2"/><rect x="28" y="18" width="16" height="38" fill="${G}" rx="2"/></svg>`,cls:'bull',sig:'Bullish reversal',looks:'Small red candle, then a big green candle engulfing it. After a downtrend.',p:'Buyers overwhelmed sellers, reversing the whole prior period.'},
+  {n:'Bearish Engulfing',svg:`<svg class="candle-svg" width="52" height="70" viewBox="0 0 52 70"><line x1="14" y1="24" x2="14" y2="44" stroke="${G}" stroke-width="2"/><rect x="7" y="30" width="14" height="10" fill="${G}" rx="2"/><line x1="36" y1="10" x2="36" y2="58" stroke="${R}" stroke-width="2"/><rect x="28" y="16" width="16" height="38" fill="${R}" rx="2"/></svg>`,cls:'bear',sig:'Bearish reversal',looks:'Small green candle, then a big red candle engulfing it. After an uptrend.',p:'Sellers took control; the uptrend may reverse lower.'},
+  {n:'Morning Star',svg:`<svg class="candle-svg" width="66" height="70" viewBox="0 0 66 70"><line x1="12" y1="8" x2="12" y2="44" stroke="${R}" stroke-width="2"/><rect x="6" y="10" width="12" height="30" fill="${R}" rx="2"/><line x1="33" y1="46" x2="33" y2="58" stroke="#8b98a5" stroke-width="2"/><rect x="28" y="50" width="10" height="6" fill="#8b98a5" rx="2"/><line x1="54" y1="20" x2="54" y2="52" stroke="${G}" stroke-width="2"/><rect x="48" y="24" width="12" height="26" fill="${G}" rx="2"/></svg>`,cls:'bull',sig:'Bullish reversal',looks:'3 candles at a bottom: long red → small indecision → strong green.',p:'Selling exhausted, indecision, then buyers took over. Often the start of an uptrend.'},
+  {n:'Evening Star',svg:`<svg class="candle-svg" width="66" height="70" viewBox="0 0 66 70"><line x1="12" y1="20" x2="12" y2="56" stroke="${G}" stroke-width="2"/><rect x="6" y="24" width="12" height="30" fill="${G}" rx="2"/><line x1="33" y1="8" x2="33" y2="20" stroke="#8b98a5" stroke-width="2"/><rect x="28" y="12" width="10" height="6" fill="#8b98a5" rx="2"/><line x1="54" y1="16" x2="54" y2="48" stroke="${R}" stroke-width="2"/><rect x="48" y="20" width="12" height="26" fill="${R}" rx="2"/></svg>`,cls:'bear',sig:'Bearish reversal',looks:'Mirror of morning star: long green → small indecision → strong red at a top.',p:'Buying exhausted, indecision, then sellers took control.'}
+];
+document.getElementById('patternGrid').innerHTML=patterns.map(p=>`
+  <div class="card">
+    ${p.svg}
+    <h4>${p.n}</h4>
+    <span class="sig ${p.cls}">${p.sig}</span>
+    <div class="looks">${p.looks}</div>
+    <p>${p.p}</p>
+  </div>`).join('');
+
+// ---- Position size calc ----
+const $=id=>document.getElementById(id);
+const fmt=n=>'$'+n.toLocaleString(undefined,{maximumFractionDigits:2});
+function calcPos(){
+  const acct=+$('acct').value||0, rp=+$('riskpct').value||0;
+  const e=+$('entry').value||0, s=+$('stop').value||0;
+  const risk=acct*rp/100;
+  const per=Math.abs(e-s);
+  const sh=per>0?Math.floor(risk/per):0;
+  $('dollarRisk').textContent=fmt(risk);
+  $('perShare').textContent=fmt(per);
+  $('shares').textContent=sh.toLocaleString()+' shares';
+  $('posVal').textContent=fmt(sh*e);
+}
+['acct','riskpct','entry','stop'].forEach(id=>$(id).addEventListener('input',calcPos));
+calcPos();
+
+// ---- Risk/Reward calc ----
+function calcRR(){
+  const e=+$('rrEntry').value||0, s=+$('rrStop').value||0, t=+$('rrTarget').value||0;
+  const dir=$('rrDir').value;
+  let risk,reward;
+  if(dir==='long'){risk=e-s; reward=t-e;} else {risk=s-e; reward=e-t;}
+  $('rrRisk').textContent=fmt(Math.abs(risk));
+  $('rrReward').textContent=fmt(Math.abs(reward));
+  const v=$('rrVerdict');
+  if(risk<=0||reward<=0){
+    $('rrRatio').textContent='—';
+    $('rrWin').textContent='—';
+    v.textContent='⚠️ Check your prices — for a '+dir+', target and stop must be on the correct sides of entry.';
+    v.style.background='rgba(210,153,34,.15)'; v.style.color='#d29922';
+    return;
+  }
+  const ratio=reward/risk;
+  $('rrRatio').textContent='1 : '+ratio.toFixed(1);
+  const win=100/(1+ratio);
+  $('rrWin').textContent=win.toFixed(0)+'%';
+  if(ratio>=2){v.textContent='✅ Solid setup — R:R of at least 1:2. You can be wrong more than half the time and still profit.'; v.style.background='rgba(63,185,80,.15)'; v.style.color='#3fb950';}
+  else if(ratio>=1){v.textContent='⚠️ Marginal — below the common 1:2 minimum. Needs a high win rate to pay off.'; v.style.background='rgba(210,153,34,.15)'; v.style.color='#d29922';}
+  else {v.textContent='❌ Poor R:R — risking more than you stand to gain. Most traders skip these.'; v.style.background='rgba(248,81,73,.15)'; v.style.color='#f85149';}
+}
+['rrEntry','rrStop','rrTarget','rrDir'].forEach(id=>$(id).addEventListener('input',calcRR));
+$('rrDir').addEventListener('change',calcRR);
+calcRR();
+
+// ---- Checklist ----
+document.querySelectorAll('#checklistList li').forEach(li=>{
+  li.addEventListener('click',()=>{
+    const done=li.style.opacity==='0.5';
+    li.style.opacity=done?'1':'0.5';
+    li.style.textDecoration=done?'none':'line-through';
+  });
+});
+</script>
+</body>
+</html>

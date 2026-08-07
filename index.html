@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratford Tools</title>
+<style>
+  :root{
+    --bg:#0a0d14; --panel:#131a26; --border:#26324a; --text:#eef3fa; --muted:#8b98ad;
+    --gold:#f5c542; --brand:#ff4d6d; --brand2:#c026d3; --accent:#38bdf8; --green:#3fd07a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif; color:var(--text); min-height:100vh;
+    background:
+      radial-gradient(1000px 500px at 80% -10%,rgba(192,38,211,.10),transparent 60%),
+      radial-gradient(900px 450px at -10% 10%,rgba(56,189,248,.08),transparent 55%),
+      #0a0d14;
+    padding:0 0 60px;
+  }
+  header{text-align:center; padding:52px 22px 20px}
+  .badge{display:inline-block; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; font-weight:700;
+         color:var(--accent); background:rgba(56,189,248,.1); border:1px solid rgba(56,189,248,.3); padding:5px 14px; border-radius:20px; margin-bottom:16px}
+  h1{font-size:2.6rem; font-weight:800; letter-spacing:-1px;
+     background:linear-gradient(90deg,#f5c542,#ff4d6d,#38bdf8); background-size:200% auto;
+     -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:shine 6s linear infinite}
+  @keyframes shine{to{background-position:200% center}}
+  .sub{color:var(--muted); margin-top:8px; font-size:1rem}
+  .wrap{max-width:820px; margin:0 auto; padding:0 22px}
+  .cards{display:grid; gap:18px; margin-top:34px}
+  a.card{
+    display:block; text-decoration:none; color:inherit; background:linear-gradient(165deg,var(--panel),#0f1520);
+    border:1px solid var(--border); border-radius:18px; padding:24px 26px; position:relative; overflow:hidden;
+    transition:transform .18s,border-color .18s,box-shadow .18s;
+  }
+  a.card:hover{transform:translateY(-4px); border-color:var(--accent); box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  a.card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:5px; background:var(--c,var(--accent))}
+  .card .emoji{font-size:2.4rem; margin-bottom:8px}
+  .card h2{font-size:1.35rem; margin-bottom:6px}
+  .card p{color:var(--muted); font-size:.92rem}
+  .card .go{margin-top:14px; font-size:.85rem; font-weight:700; color:var(--c,var(--accent)); display:inline-flex; align-items:center; gap:6px}
+  .c1{--c:var(--green)} .c2{--c:var(--gold)} .c3{--c:var(--brand)}
+  footer{text-align:center; color:var(--muted); font-size:.8rem; margin-top:40px}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">Stratford Advertisements</div>
+  <h1>🛠️ Stratford Tools</h1>
+  <div class="sub">Ethan's private toolkit — cheat sheets, strategy &amp; the idea pipeline</div>
+</header>
+<div class="wrap">
+  <div class="cards">
+    <a class="card c1" href="trading-cheatsheet.html">
+      <div class="emoji">📈</div>
+      <h2>Trading Technical Analysis</h2>
+      <p>Interactive cheat sheet — candlestick patterns, entries, indicators, timing, risk management, plus live position-size &amp; risk/reward calculators.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="card c2" href="billion-dollar-business-ideas.html">
+      <div class="emoji">💰</div>
+      <h2>Billion Dollar Business Ideas</h2>
+      <p>Strategic playbook — skill-leverage plays, oil &amp; energy entry, high-ceiling wealth builders, and the honest bottom line.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="card c3" href="pain-log.html">
+      <div class="emoji">💢</div>
+      <h2>The Pain Log</h2>
+      <p>SaaS idea pipeline — log client complaints, auto-score the opportunity, and watch pains validate at 3+ mentions. Saves in your browser.</p>
+      <span class="go">Open tool →</span>
+    </a>
+  </div>
+  <footer>Built by Jarvis · Updated automatically as new work lands</footer>
+</div>
+</body>
+</html>
