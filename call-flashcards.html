@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Call Flashcards — Stratford</title>
+<link rel="stylesheet" href="stratford.css">
+<style>
+  :root{--bg:#0a0d16; --panel:rgba(255,255,255,.045); --border:rgba(255,255,255,.09); --text:#eef3fb; --muted:#94a0b8; --accent:#22d3ee; --violet:#8b5cf6; --pink:#ec4899; --green:#34d399; --gold:#fbbf24}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif; color:var(--text); min-height:100vh; background:transparent; padding:0 0 60px}
+  .wrap{max-width:760px; margin:0 auto; padding:0 22px}
+  header{text-align:center; padding:60px 22px 8px}
+  .eyebrow{display:inline-block; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:var(--accent); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3); padding:6px 14px; border-radius:20px; margin-bottom:16px}
+  h1{font-size:2.4rem; font-weight:800; letter-spacing:-.03em; background:linear-gradient(120deg,#22d3ee,#8b5cf6,#ec4899); background-size:200% auto; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:sh 7s linear infinite}
+  @keyframes sh{to{background-position:200% center}}
+  .sub{color:var(--muted); margin-top:8px}
+
+  /* segmented control */
+  .modes{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:26px 0 10px}
+  .mode{background:var(--panel); border:1px solid var(--border); color:var(--muted); padding:9px 16px; border-radius:22px; cursor:pointer; font-weight:600; font-size:.86rem; backdrop-filter:blur(12px); transition:.2s}
+  .mode:hover{color:var(--text)}
+  .mode.active{background:linear-gradient(135deg,var(--accent),var(--violet)); color:#04121a; border-color:transparent}
+
+  /* flashcard */
+  .deck{margin:22px auto 0}
+  .progress{display:flex; align-items:center; justify-content:space-between; color:var(--muted); font-size:.85rem; margin-bottom:12px}
+  .pbar{flex:1; height:6px; background:rgba(255,255,255,.08); border-radius:6px; margin:0 14px; overflow:hidden}
+  .pbar i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--pink)); transition:width .3s}
+
+  .card-stage{perspective:1600px; margin:0 auto}
+  .fcard{position:relative; min-height:340px; border-radius:24px; cursor:pointer; transition:transform .6s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d}
+  .fcard.flip{transform:rotateY(180deg)}
+  .face{position:absolute; inset:0; border-radius:24px; padding:34px; backface-visibility:hidden; display:flex; flex-direction:column; overflow:hidden;
+    background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02)); border:1px solid var(--border); backdrop-filter:blur(18px)}
+  .face::after{content:""; position:absolute; width:300px; height:300px; border-radius:50%; top:-120px; right:-100px; opacity:.16; background:radial-gradient(circle,var(--cc,#22d3ee),transparent 62%)}
+  .face .stage-lbl{font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700; color:var(--cc,#22d3ee); margin-bottom:14px}
+  .front h2{font-family:'Sora'; font-size:1.5rem; margin-bottom:10px; line-height:1.25}
+  .front .hint{margin-top:auto; color:var(--muted); font-size:.82rem; display:flex; align-items:center; gap:8px}
+  .front .goal{color:var(--muted); font-size:.95rem; line-height:1.5}
+  .back{transform:rotateY(180deg); background:linear-gradient(160deg,rgba(139,92,246,.14),rgba(34,211,238,.06))}
+  .back .say{font-size:1.12rem; line-height:1.6; font-weight:500}
+  .back .say .em{color:var(--gold)}
+  .back .why{margin-top:16px; padding-top:14px; border-top:1px solid var(--border); color:var(--muted); font-size:.86rem; line-height:1.5}
+  .back .why b{color:var(--accent)}
+
+  .nav{display:flex; align-items:center; justify-content:center; gap:14px; margin-top:22px}
+  .navbtn{background:var(--panel); border:1px solid var(--border); color:var(--text); width:52px; height:52px; border-radius:50%; font-size:1.3rem; cursor:pointer; backdrop-filter:blur(12px); transition:.2s; display:grid; place-items:center}
+  .navbtn:hover{background:rgba(255,255,255,.1); transform:translateY(-2px)}
+  .navbtn:disabled{opacity:.3; cursor:default; transform:none}
+  .flipbtn{background:linear-gradient(135deg,var(--accent),var(--violet)); border:none; color:#04121a; font-weight:700; padding:0 26px; height:52px; border-radius:26px; cursor:pointer; font-size:.95rem; transition:.2s}
+  .flipbtn:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(34,211,238,.4)}
+
+  .tip{margin:30px auto 0; background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.3); border-left:4px solid var(--gold); border-radius:12px; padding:14px 18px; color:#ecd9a8; font-size:.9rem}
+  footer{text-align:center; color:var(--muted); font-size:.8rem; margin-top:36px}
+  @media(max-width:600px){h1{font-size:1.8rem}.face{padding:26px}.fcard{min-height:380px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">First-Call Playbook</div>
+    <h1>📇 Call Flashcards</h1>
+    <div class="sub">Exactly what to say — and how to hook them. Tap a card to flip.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="modes" id="modes">
+    <div class="mode active" data-m="flow">🎯 Call Flow</div>
+    <div class="mode" data-m="objections">🛡️ Objections</div>
+    <div class="mode" data-m="hooks">🪝 Hooks &amp; Closes</div>
+  </div>
+
+  <div class="deck">
+    <div class="progress"><span id="pnum">1 / 8</span><span class="pbar"><i id="pfill"></i></span><span id="pmode">Call Flow</span></div>
+    <div class="card-stage">
+      <div class="fcard" id="fcard">
+        <div class="face front" id="front"></div>
+        <div class="face back" id="back"></div>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="navbtn" id="prev">‹</button>
+      <button class="flipbtn" id="flip">Flip card ↻</button>
+      <button class="navbtn" id="next">›</button>
+    </div>
+  </div>
+
+  <div class="tip">💡 <b>Golden rule:</b> You're not begging for a sale — you're a professional offering a risk-free way to get them more customers. Confidence + curiosity about <em>their</em> business beats any script. Listen more than you talk.</div>
+
+  <footer>📇 Call Flashcards · Built by Jarvis for Ethan · Tap to flip · ← → to navigate</footer>
+</div>
+
+<script src="stratford.js"></script>
+<script>
+const decks={
+  flow:[
+    {c:'#22d3ee',stage:'Step 1 · Open',front:'The Opener',goal:'Break the ice, sound human, earn 30 seconds.',say:'"Hey [Name], this is Ethan with Stratford Advertisements — did I catch you at an okay time? I\'ll be quick."',why:'<b>Why:</b> Asking permission disarms them and signals respect. "I\'ll be quick" lowers the wall. Warm, not robotic.'},
+    {c:'#22d3ee',stage:'Step 2 · Reason',front:'Why You\'re Calling',goal:'Make it about THEM, not you.',say:'"I help [their type of business] get more customers through Facebook and Instagram ads — and I noticed [specific thing about their business]. Figured it was worth a quick conversation."',why:'<b>Why:</b> A specific observation ("saw your reviews are great but your ads are quiet") proves you did homework. Generic = ignored.'},
+    {c:'#8b5cf6',stage:'Step 3 · Discover',front:'Ask About Their World',goal:'Get them talking. Find the pain.',say:'"Right now, how are most of your new customers finding you?" … "Are you running any ads currently? How\'s that going?" … "If you could wave a wand — more customers, or better ones?"',why:'<b>Why:</b> People buy when THEY say the problem out loud. Your job is questions, not pitching. Listen for the gap.'},
+    {c:'#8b5cf6',stage:'Step 4 · Bridge',front:'Connect Pain → Solution',goal:'Show you understood, then position the fix.',say:'"So it sounds like [repeat their pain back]. That\'s actually exactly what I do — I run targeted ads that put you in front of the right local people, and I handle everything so you don\'t have to think about it."',why:'<b>Why:</b> Repeating their words back = "this person gets me." Then you\'re the obvious answer, not a random pitch.'},
+    {c:'#34d399',stage:'Step 5 · The Model',front:'How It Works (Trust)',goal:'Kill the "is this a scam" fear.',say:'"Here\'s the part people love: your ad budget stays on YOUR card and goes straight to Facebook — I never touch your money. You just pay me a flat monthly fee to manage it all."',why:'<b>Why:</b> This is your #1 differentiator. Money-safety removes the biggest objection before they raise it.'},
+    {c:'#34d399',stage:'Step 6 · The Offer',front:'The No-Risk Trial',goal:'Make saying yes feel easy.',say:'"And to make it easy — the first month is on me, no lock-in. If you don\'t like it, you walk, no hard feelings. I\'d rather earn your business than trap you in a contract."',why:'<b>Why:</b> Removing risk is how you close beginners-to-you. "Earn, not trap" makes you sound confident and honest.'},
+    {c:'#fbbf24',stage:'Step 7 · Close',front:'Ask For The Next Step',goal:'Don\'t leave it vague. Get a commitment.',say:'"How about this — let\'s set up a quick 20-minute call this week, I\'ll show you exactly what I\'d run for you. Does [day] or [day] work better?"',why:'<b>Why:</b> Always end with a specific yes/no choice (this day or that day) — never "let me know." Assume the next step.'},
+    {c:'#ec4899',stage:'Step 8 · Wrap',front:'Lock It In',goal:'Confirm + leave a great last impression.',say:'"Perfect, [day] at [time]. I\'ll send a quick confirmation. Really looking forward to it — I think we can do some great things for [business]."',why:'<b>Why:</b> Repeat the time (they\'ll remember), promise a confirmation (professional), end on their success. Done.'}
+  ],
+  objections:[
+    {c:'#ec4899',stage:'Objection',front:'"It\'s too expensive"',goal:'Reframe cost as investment.',say:'"Totally fair. Think of it this way — if I bring you even one or two new customers a month, it pays for itself. And with the free first month, you get to see that before spending a dollar on my fee."',why:'<b>Why:</b> Shift from "cost" to "return." The trial removes the risk of the objection entirely.'},
+    {c:'#ec4899',stage:'Objection',front:'"I need to think about it"',goal:'Uncover the REAL hesitation.',say:'"Of course — what\'s the main thing you\'d want to think through? Sometimes I can answer it right now." (pause, listen) … "Since the first month\'s free and there\'s no lock-in, is there any downside to just trying it?"',why:'<b>Why:</b> "Think about it" usually hides a specific worry. Draw it out. Then the no-risk trial dissolves the stall.'},
+    {c:'#ec4899',stage:'Objection',front:'"I already tried ads, they didn\'t work"',goal:'Separate you from their bad experience.',say:'"I hear that a lot — and usually it\'s because ads were set up without proper targeting or tracking, so there was no way to know what worked. That\'s exactly what I fix. Can I ask what you tried before?"',why:'<b>Why:</b> Validate, then differentiate. You\'re not "ads" — you\'re the professional who does it right. Then diagnose.'},
+    {c:'#ec4899',stage:'Objection',front:'"I don\'t have time for this"',goal:'Sell the "done-for-you."',say:'"That\'s the whole point of hiring me — you don\'t do anything. I handle the setup, the ads, the tracking, the reporting. You just get the calls and customers. It\'s the opposite of more work for you."',why:'<b>Why:</b> Their objection IS your value prop. Flip it: hiring you SAVES time, doesn\'t cost it.'},
+    {c:'#ec4899',stage:'Objection',front:'"Let me talk to my partner/spouse"',goal:'Keep momentum, arm them to sell it.',say:'"Makes sense. Want me to send a quick one-pager you can share with them? It covers exactly how it works and the free trial. Then let\'s reconnect [day] — sound good?"',why:'<b>Why:</b> Give them a tool (your one-pager) and a next date. Don\'t let it drift into silence.'},
+    {c:'#ec4899',stage:'Objection',front:'"How do I know you\'re legit?"',goal:'Lean into transparency.',say:'"Great question — you should ask that. That\'s exactly why your money never touches my hands; it stays on your card, paid straight to Facebook. Plus the first month\'s free. You\'re basically risk-free until I prove it."',why:'<b>Why:</b> Don\'t get defensive — welcome the question. Your model + trial ARE the proof of legitimacy.'}
+  ],
+  hooks:[
+    {c:'#fbbf24',stage:'Hook',front:'The Curiosity Hook',goal:'Open a loop they want closed.',say:'"I noticed something about how [competitor or their category] is getting customers that you\'re probably missing out on — got two minutes for me to explain?"',why:'<b>Why:</b> Curiosity + a hint of FOMO. People can\'t resist "something you\'re missing."'},
+    {c:'#fbbf24',stage:'Hook',front:'The Result Hook',goal:'Lead with the outcome they want.',say:'"What if you could wake up to 5–10 new leads in your inbox every week without lifting a finger? That\'s basically what I set up for businesses like yours."',why:'<b>Why:</b> Paint the dream outcome first. Specific + effortless = irresistible.'},
+    {c:'#fbbf24',stage:'Hook',front:'The Local Hook',goal:'Make it feel close to home.',say:'"I focus on helping local [their type] businesses dominate their area online — the people searching in [city] right now should be seeing YOU, not the competition."',why:'<b>Why:</b> "Your area" + "the competition" triggers territorial instinct. Local specificity builds trust.'},
+    {c:'#34d399',stage:'Close',front:'The Assumptive Close',goal:'Move forward as if it\'s a yes.',say:'"Alright, I\'ll get your first campaign drafted up. What\'s the best email to send the quick setup details to?"',why:'<b>Why:</b> Assume the sale and ask a small logistical question. Momentum closes deals.'},
+    {c:'#34d399',stage:'Close',front:'The Either/Or Close',goal:'Two yeses, no "no."',say:'"Do you want to start with a lead-generation campaign, or focus on brand awareness first? Either way, I\'d kick it off this week."',why:'<b>Why:</b> Both options are a "yes." Removes the yes/no decision entirely — just which flavor.'},
+    {c:'#34d399',stage:'Close',front:'The Risk-Reversal Close',goal:'The closer for the hesitant.',say:'"Here\'s my promise: give me one month, free. If you don\'t see it\'s worth it, we shake hands and part ways. All the risk\'s on me. Fair enough to give it a shot?"',why:'<b>Why:</b> When ALL risk is on you, "no" becomes irrational. This is your strongest close — save it for the fence-sitters.'}
+  ]
+};
+
+let mode='flow', idx=0, flipped=false;
+const front=document.getElementById('front'), back=document.getElementById('back'), fcard=document.getElementById('fcard');
+
+function draw(){
+  const d=decks[mode]; const card=d[idx];
+  fcard.classList.remove('flip'); flipped=false;
+  // small delay so flip resets cleanly
+  setTimeout(()=>{
+    front.style.setProperty('--cc',card.c); back.style.setProperty('--cc',card.c);
+    front.innerHTML=`<div class="stage-lbl">${card.stage}</div><h2>${card.front}</h2><div class="goal">${card.goal}</div><div class="hint">👆 Tap to see what to say</div>`;
+    back.innerHTML=`<div class="stage-lbl">What to say</div><div class="say">${card.say.replace(/"([^"]*)"/g,'<span class="em">"$1"</span>')}</div><div class="why">${card.why}</div>`;
+  },flipped?260:0);
+  document.getElementById('pnum').textContent=(idx+1)+' / '+d.length;
+  document.getElementById('pfill').style.width=((idx+1)/d.length*100)+'%';
+  document.getElementById('pmode').textContent={flow:'Call Flow',objections:'Objections',hooks:'Hooks & Closes'}[mode];
+  document.getElementById('prev').disabled=idx===0;
+  document.getElementById('next').disabled=idx===d.length-1;
+}
+function flip(){flipped=!flipped; fcard.classList.toggle('flip');}
+document.getElementById('flip').onclick=flip;
+fcard.onclick=flip;
+document.getElementById('next').onclick=e=>{e.stopPropagation(); if(idx<decks[mode].length-1){idx++; draw();}};
+document.getElementById('prev').onclick=e=>{e.stopPropagation(); if(idx>0){idx--; draw();}};
+document.getElementById('modes').addEventListener('click',e=>{
+  const m=e.target.closest('.mode'); if(!m)return;
+  document.querySelectorAll('.mode').forEach(x=>x.classList.remove('active')); m.classList.add('active');
+  mode=m.dataset.m; idx=0; draw();
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'&&idx<decks[mode].length-1){idx++;draw();}
+  if(e.key==='ArrowLeft'&&idx>0){idx--;draw();}
+  if(e.key===' '||e.key==='Enter'){e.preventDefault();flip();}
+});
+draw();
+</script>
+</body>
+</html>

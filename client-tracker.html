@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Tracker — Stratford</title>
+<link rel="stylesheet" href="stratford.css">
+<style>
+  :root{--bg:#0a0d16;--panel:rgba(255,255,255,.045);--border:rgba(255,255,255,.09);--text:#eef3fb;--muted:#94a0b8;--accent:#22d3ee;--violet:#8b5cf6;--pink:#ec4899;--green:#34d399;--gold:#fbbf24;--red:#f87171}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;background:transparent;padding:0 0 60px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+  header{text-align:center;padding:60px 22px 6px}
+  .eyebrow{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--violet);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);padding:6px 14px;border-radius:20px;margin-bottom:16px}
+  h1{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(120deg,#8b5cf6,#22d3ee,#34d399);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 7s linear infinite}
+  @keyframes sh{to{background-position:200% center}}
+  .sub{color:var(--muted);margin-top:8px}
+
+  .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:26px 0 18px}
+  .mrr{background:linear-gradient(135deg,rgba(52,211,153,.16),rgba(34,211,238,.08));border:1px solid var(--border);border-radius:14px;padding:12px 20px;backdrop-filter:blur(12px)}
+  .mrr b{font-family:'Sora';font-size:1.5rem;color:var(--green)}
+  .mrr span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block}
+  .btn{border:none;cursor:pointer;font-weight:700;font-size:.9rem;padding:11px 18px;border-radius:10px;transition:.2s;background:linear-gradient(135deg,var(--violet),var(--accent));color:#fff}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
+
+  .board{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1000px){.board{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.board{grid-template-columns:1fr}}
+  .col{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--border);border-radius:16px;padding:14px;min-height:200px;backdrop-filter:blur(12px)}
+  .col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .col-head .name{font-family:'Sora';font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:7px}
+  .col-head .dot{width:9px;height:9px;border-radius:50%}
+  .col-head .count{font-size:.75rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:10px}
+  .lead-card{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:9px;cursor:grab;transition:.15s;border-left:3px solid var(--lc,#8b5cf6)}
+  .lead-card:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
+  .lead-card.dragging{opacity:.4}
+  .lead-card .ln{font-weight:700;font-size:.92rem;margin-bottom:3px}
+  .lead-card .li{font-size:.78rem;color:var(--muted)}
+  .lead-card .lfee{font-size:.78rem;color:var(--green);font-weight:600;margin-top:4px}
+  .lead-card .del{float:right;color:var(--muted);cursor:pointer;font-size:.85rem;opacity:0;transition:.15s}
+  .lead-card:hover .del{opacity:1}
+  .lead-card .del:hover{color:var(--red)}
+  .col.dragover{border-color:var(--accent);background:rgba(34,211,238,.06)}
+  .addlead{width:100%;background:transparent;border:1px dashed var(--border);color:var(--muted);border-radius:10px;padding:9px;cursor:pointer;font-size:.82rem;transition:.15s}
+  .addlead:hover{border-color:var(--violet);color:var(--text)}
+  .empty-hint{color:var(--muted);font-size:.78rem;text-align:center;padding:10px 0;opacity:.7}
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(5,7,12,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .overlay.show{display:flex}
+  .modal{background:linear-gradient(160deg,#141b2b,#0d1220);border:1px solid var(--border);border-radius:18px;width:100%;max-width:440px;padding:26px}
+  .modal h2{font-family:'Sora';font-size:1.2rem;margin-bottom:18px}
+  .fg{margin-bottom:14px}.fg label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .fg input,.fg select{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
+  .fg input:focus,.fg select:focus{outline:none;border-color:var(--accent)}
+  .mfoot{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+  footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:36px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Mini-CRM</div>
+    <h1>🗂️ Client Tracker</h1>
+    <div class="sub">Drag leads through your pipeline. Nothing falls through the cracks. Saves in your browser.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="bar">
+    <div class="mrr"><b id="mrr">$0</b><span>Monthly recurring revenue (paying)</span></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" id="addBtn">+ Add Lead</button>
+      <button class="btn btn-ghost" id="exportBtn">⬇ Export</button>
+    </div>
+  </div>
+  <div class="board" id="board"></div>
+  <footer>🗂️ Client Tracker · Built by Jarvis for Ethan · Drag cards between stages · Saves automatically</footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="mTitle">Add Lead</h2>
+    <div class="fg"><label>Business name</label><input id="fName" placeholder="e.g. Acme Roofing"></div>
+    <div class="fg"><label>Contact / notes</label><input id="fInfo" placeholder="e.g. John — 555-1234, met at expo"></div>
+    <div class="fg"><label>Monthly fee ($)</label><input id="fFee" type="number" placeholder="1500"></div>
+    <div class="fg"><label>Stage</label><select id="fStage"></select></div>
+    <div class="mfoot"><button class="btn btn-ghost" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button></div>
+  </div>
+</div>
+
+<script src="stratford.js"></script>
+<script>
+const STAGES=[
+  {id:'lead',name:'🎯 Lead',color:'#8b5cf6'},
+  {id:'contacted',name:'📞 Contacted',color:'#22d3ee'},
+  {id:'pitched',name:'📄 Pitched',color:'#ec4899'},
+  {id:'trial',name:'🎁 Trial',color:'#fbbf24'},
+  {id:'paying',name:'💰 Paying',color:'#34d399'}
+];
+const KEY='***';
+let data=[]; let editId=null;
+function uid(){return Math.random().toString(36).slice(2,9)}
+function load(){try{data=JSON.parse(localStorage.getItem(KEY))||seed();}catch(e){data=seed();}}
+function seed(){return [
+  {id:uid(),name:'Milam Capital Group',info:'First client — campaign in setup',fee:1500,stage:'trial'},
+  {id:uid(),name:'(example) Acme Roofing',info:'Add your real leads →',fee:1200,stage:'lead'}
+];}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));}
+const $=id=>document.getElementById(id);
+const money=v=>'$'+(+v||0).toLocaleString();
+
+function render(){
+  const board=$('board'); board.innerHTML='';
+  STAGES.forEach(s=>{
+    const items=data.filter(d=>d.stage===s.id);
+    const col=document.createElement('div'); col.className='col'; col.dataset.stage=s.id;
+    col.innerHTML=`<div class="col-head"><span class="name"><span class="dot" style="background:${s.color}"></span>${s.name}</span><span class="count">${items.length}</span></div>`+
+      items.map(d=>`<div class="lead-card" draggable="true" data-id="${d.id}" style="--lc:${s.color}">
+          <span class="del" onclick="delLead(event,'${d.id}')">✕</span>
+          <div class="ln" onclick="editLead('${d.id}')">${esc(d.name)}</div>
+          <div class="li">${esc(d.info||'')}</div>
+          ${d.fee?`<div class="lfee">${money(d.fee)}/mo</div>`:''}
+        </div>`).join('')+
+      (items.length?'':'<div class="empty-hint">Drop leads here</div>')+
+      `<button class="addlead" onclick="addTo('${s.id}')">+ add</button>`;
+    board.appendChild(col);
+  });
+  wireDnD();
+  $('mrr').textContent=money(data.filter(d=>d.stage==='paying').reduce((a,d)=>a+(+d.fee||0),0));
+  save();
+}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+let dragId=null;
+function wireDnD(){
+  document.querySelectorAll('.lead-card').forEach(c=>{
+    c.addEventListener('dragstart',e=>{dragId=c.dataset.id;c.classList.add('dragging');});
+    c.addEventListener('dragend',()=>{c.classList.remove('dragging');document.querySelectorAll('.col').forEach(x=>x.classList.remove('dragover'));});
+  });
+  document.querySelectorAll('.col').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('dragover');});
+    col.addEventListener('dragleave',()=>col.classList.remove('dragover'));
+    col.addEventListener('drop',e=>{e.preventDefault();const d=data.find(x=>x.id===dragId);if(d){d.stage=col.dataset.stage;render();}});
+  });
+}
+window.delLead=(e,id)=>{e.stopPropagation();if(confirm('Remove this lead?')){data=data.filter(x=>x.id!==id);render();}};
+window.editLead=id=>{const d=data.find(x=>x.id===id);editId=id;openModal(d);};
+window.addTo=stage=>{editId=null;openModal(null,stage);};
+
+function fillStages(sel){$('fStage').innerHTML=STAGES.map(s=>`<option value="${s.id}" ${s.id===sel?'selected':''}>${s.name}</option>`).join('');}
+function openModal(d,stage){
+  $('mTitle').textContent=d?'Edit Lead':'Add Lead';
+  $('fName').value=d?d.name:''; $('fInfo').value=d?d.info:''; $('fFee').value=d?d.fee:'';
+  fillStages(d?d.stage:(stage||'lead'));
+  $('overlay').classList.add('show'); $('fName').focus();
+}
+function closeModal(){$('overlay').classList.remove('show');editId=null;}
+$('addBtn').onclick=()=>openModal(null,'lead');
+$('cancelBtn').onclick=closeModal;
+$('overlay').onclick=e=>{if(e.target===$('overlay'))closeModal();};
+$('saveBtn').onclick=()=>{
+  const rec={name:$('fName').value.trim(),info:$('fInfo').value.trim(),fee:+$('fFee').value||0,stage:$('fStage').value};
+  if(!rec.name){$('fName').focus();return;}
+  if(editId){Object.assign(data.find(x=>x.id===editId),rec);}else{rec.id=uid();data.push(rec);}
+  render();closeModal();
+};
+$('exportBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clients-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+load();render();
+</script>
+</body>
+</html>

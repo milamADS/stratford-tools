@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Builder — Stratford</title>
+<link rel="stylesheet" href="stratford.css">
+<style>
+  :root{--bg:#0a0d16;--panel:rgba(255,255,255,.045);--border:rgba(255,255,255,.09);--text:#eef3fb;--muted:#94a0b8;--accent:#8b5cf6;--cyan:#22d3ee;--pink:#ec4899;--green:#34d399;--gold:#fbbf24}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;background:transparent;padding:0 0 60px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  header{text-align:center;padding:60px 22px 6px}
+  .eyebrow{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--accent);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);padding:6px 14px;border-radius:20px;margin-bottom:16px}
+  h1{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(120deg,#8b5cf6,#ec4899,#22d3ee);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 7s linear infinite}
+  @keyframes sh{to{background-position:200% center}}
+  .sub{color:var(--muted);margin-top:8px}
+  .layout{display:grid;grid-template-columns:320px 1fr;gap:24px;margin-top:30px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:18px;padding:22px;backdrop-filter:blur(16px)}
+  .panel h3{font-family:'Sora';font-size:1rem;margin-bottom:14px;color:var(--accent)}
+  .fg{margin-bottom:12px}
+  .fg label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .fg input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
+  .fg input:focus{outline:none;border-color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{border:none;cursor:pointer;font-weight:700;font-size:.88rem;padding:11px 16px;border-radius:10px;transition:.2s;width:100%;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;margin-top:6px}
+  .btn:hover{transform:translateY(-2px)}
+
+  #doc{background:linear-gradient(160deg,#0c1120,#0a0d16);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+  .d-head{padding:34px;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(236,72,153,.1));border-bottom:1px solid var(--border)}
+  .d-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .d-logo{width:44px;height:44px;border-radius:12px;background:conic-gradient(from 210deg,#8b5cf6,#ec4899,#22d3ee,#8b5cf6);display:grid;place-items:center;font-size:1.1rem}
+  .d-brand b{font-family:'Sora';font-size:1.15rem}
+  .d-head h2{font-family:'Sora';font-size:1.9rem;font-weight:800;letter-spacing:-.02em}
+  .d-head .forwho{color:var(--muted);margin-top:6px}
+  .d-body{padding:30px 34px}
+  .sec{margin-bottom:26px}
+  .sec h4{font-family:'Sora';font-size:1.05rem;margin-bottom:10px;color:var(--cyan);display:flex;align-items:center;gap:8px}
+  .sec p{color:#cfd6e6;line-height:1.6;font-size:.95rem}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+  .stepc{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .stepc .num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;font-weight:700;display:grid;place-items:center;font-size:.8rem;margin-bottom:8px}
+  .stepc b{font-size:.9rem;display:block;margin-bottom:3px}
+  .stepc span{font-size:.8rem;color:var(--muted)}
+  .price-box{background:linear-gradient(135deg,rgba(52,211,153,.14),rgba(139,92,246,.08));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:8px 0}
+  .price-box .amt{font-family:'Sora';font-size:2.6rem;font-weight:800}
+  .price-box .amt small{font-size:1rem;color:var(--muted);font-weight:400}
+  .price-box .free{margin-top:8px;color:var(--green);font-weight:700}
+  .trust{background:rgba(255,255,255,.04);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;padding:16px 18px}
+  .trust b{color:var(--green)}
+  ul.ticks{list-style:none;margin:8px 0}
+  ul.ticks li{padding:6px 0 6px 26px;position:relative;color:#cfd6e6;font-size:.92rem}
+  ul.ticks li::before{content:"✓";position:absolute;left:2px;color:var(--green);font-weight:800}
+  .d-foot{padding:20px 34px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:.82rem}
+  .cta{display:inline-block;margin-top:10px;background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;padding:12px 26px;border-radius:26px;font-weight:700;text-decoration:none}
+  @media print{body{background:#fff}.s-aurora,.s-grid,.s-cg,.s-home,header,.panel{display:none!important}.layout{display:block}.wrap{max-width:100%;padding:0}#doc{border:none;border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Closing Tool</div>
+    <h1>📄 Proposal Builder</h1>
+    <div class="sub">Fill in the client + fee → a clean one-pager to send. Print to PDF.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <div class="panel">
+      <h3>⚙️ Details</h3>
+      <div class="fg"><label>Client / business</label><input id="iClient" value="Milam Capital Group"></div>
+      <div class="fg"><label>Their goal (one line)</label><input id="iGoal" value="More qualified local leads, consistently"></div>
+      <div class="fg"><label>Plan name</label><input id="iPlan" value="Growth Plan"></div>
+      <div class="two">
+        <div class="fg"><label>Monthly fee ($)</label><input id="iFee" type="number" value="1500"></div>
+        <div class="fg"><label>Free trial (days)</label><input id="iTrial" type="number" value="30"></div>
+      </div>
+      <div class="fg"><label>Your name</label><input id="iYou" value="Ethan Milam"></div>
+      <div class="fg"><label>Contact (email/phone)</label><input id="iContact" value="ethan@stratfordads.com"></div>
+      <button class="btn" onclick="window.print()">🖨 Print / Save PDF</button>
+    </div>
+
+    <div id="doc">
+      <div class="d-head">
+        <div class="d-brand"><div class="d-logo">◈</div><b>Stratford Advertisements</b></div>
+        <h2>Meta Ads Proposal</h2>
+        <div class="forwho">Prepared for <b id="dClient">Milam Capital Group</b> · by <span id="dYou">Ethan Milam</span></div>
+      </div>
+      <div class="d-body">
+        <div class="sec">
+          <h4>🎯 Your goal</h4>
+          <p id="dGoal">More qualified local leads, consistently.</p>
+        </div>
+        <div class="sec">
+          <h4>🚀 What we'll do</h4>
+          <p>We design, launch, and manage targeted Facebook &amp; Instagram ad campaigns that put your business in front of the right local customers — and we optimize them continuously so your budget works harder every week.</p>
+          <div class="steps">
+            <div class="stepc"><div class="num">1</div><b>Strategy</b><span>Nail the offer &amp; audience</span></div>
+            <div class="stepc"><div class="num">2</div><b>Creative</b><span>Scroll-stopping ads built for you</span></div>
+            <div class="stepc"><div class="num">3</div><b>Launch</b><span>Tracked from day one</span></div>
+            <div class="stepc"><div class="num">4</div><b>Optimize</b><span>Scale winners, cut losers</span></div>
+            <div class="stepc"><div class="num">5</div><b>Report</b><span>Clear results, every week</span></div>
+          </div>
+        </div>
+        <div class="sec">
+          <h4>✅ What's included</h4>
+          <ul class="ticks">
+            <li>Full campaign setup, targeting &amp; tracking (Pixel)</li>
+            <li>Custom ad creative &amp; copy</li>
+            <li>Ongoing management &amp; optimization</li>
+            <li>Clear performance reports you'll actually understand</li>
+            <li>Direct access to me — not a call center</li>
+          </ul>
+        </div>
+        <div class="sec">
+          <h4>💰 Investment</h4>
+          <div class="price-box">
+            <div class="amt" id="dFee">$1,500<small>/month</small></div>
+            <div style="color:var(--muted);font-size:.9rem" id="dPlan">Growth Plan · flat management fee</div>
+            <div class="free" id="dTrial">🎉 First 30 days FREE — no lock-in, cancel anytime</div>
+          </div>
+        </div>
+        <div class="sec">
+          <h4>🛡️ How we handle your money</h4>
+          <div class="trust"><b>Your ad budget never touches our hands.</b> It stays on <em>your</em> card and is paid directly to Facebook. Our flat monthly fee is the only thing you pay us — completely separate from your ad spend. Total transparency, zero risk to your budget.</div>
+        </div>
+      </div>
+      <div class="d-foot">
+        Ready to start? Reach out: <b id="dContact">ethan@stratfordads.com</b>
+        <br><a class="cta" href="#">Let's get started →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="stratford.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+function upd(){
+  $('dClient').textContent=$('iClient').value||'Client';
+  $('dYou').textContent=$('iYou').value;
+  $('dGoal').textContent=$('iGoal').value;
+  $('dFee').innerHTML=('$'+(+$('iFee').value||0).toLocaleString())+'<small>/month</small>';
+  $('dPlan').textContent=($('iPlan').value||'Plan')+' · flat management fee';
+  const t=+$('iTrial').value||0;
+  $('dTrial').textContent=t>0?('🎉 First '+t+' days FREE — no lock-in, cancel anytime'):'No lock-in — cancel anytime';
+  $('dContact').textContent=$('iContact').value;
+}
+['iClient','iGoal','iPlan','iFee','iTrial','iYou','iContact'].forEach(id=>$(id).addEventListener('input',upd));
+upd();
+</script>
+</body>
+</html>

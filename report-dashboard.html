@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Report Builder — Stratford</title>
+<link rel="stylesheet" href="stratford.css">
+<style>
+  :root{--bg:#0a0d16;--panel:rgba(255,255,255,.045);--border:rgba(255,255,255,.09);--text:#eef3fb;--muted:#94a0b8;--accent:#22d3ee;--violet:#8b5cf6;--pink:#ec4899;--green:#34d399;--gold:#fbbf24;--red:#f87171}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;background:transparent;padding:0 0 60px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  header{text-align:center;padding:60px 22px 6px}
+  .eyebrow{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--green);background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:6px 14px;border-radius:20px;margin-bottom:16px}
+  h1{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(120deg,#34d399,#22d3ee,#8b5cf6);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 7s linear infinite}
+  @keyframes sh{to{background-position:200% center}}
+  .sub{color:var(--muted);margin-top:8px}
+  .layout{display:grid;grid-template-columns:340px 1fr;gap:24px;margin-top:30px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:18px;padding:22px;backdrop-filter:blur(16px)}
+  .panel h3{font-family:'Sora';font-size:1rem;margin-bottom:14px;color:var(--accent)}
+  .fg{margin-bottom:13px}
+  .fg label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .fg input,.fg select{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
+  .fg input:focus,.fg select:focus{outline:none;border-color:var(--accent)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btnrow{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .btn{border:none;cursor:pointer;font-weight:700;font-size:.88rem;padding:11px 16px;border-radius:10px;transition:.2s;flex:1}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-print{background:linear-gradient(135deg,var(--green),var(--accent));color:#04121a}
+  .btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
+
+  /* REPORT PREVIEW */
+  #report{background:linear-gradient(160deg,#0c1120,#0a0d16);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+  .rep-head{padding:30px 32px;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(34,211,238,.1));border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px}
+  .rep-brand{display:flex;align-items:center;gap:12px}
+  .rep-logo{width:44px;height:44px;border-radius:12px;background:conic-gradient(from 210deg,#8b5cf6,#ec4899,#22d3ee,#8b5cf6);display:grid;place-items:center;font-size:1.1rem}
+  .rep-brand b{font-family:'Sora';font-size:1.15rem;display:block}
+  .rep-brand span{font-size:.78rem;color:var(--muted)}
+  .rep-for{text-align:right}
+  .rep-for .cn{font-family:'Sora';font-size:1.3rem;font-weight:700}
+  .rep-for .pd{font-size:.8rem;color:var(--muted)}
+  .rep-body{padding:26px 32px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:8px}
+  .kpi{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden}
+  .kpi::after{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--kc,#22d3ee)}
+  .kpi .kl{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+  .kpi .kv{font-family:'Sora';font-size:1.7rem;font-weight:800;margin-top:4px}
+  .kpi .ks{font-size:.75rem;color:var(--muted);margin-top:2px}
+  .funnel{margin:22px 0}
+  .funnel h4,.rep-body h4{font-family:'Sora';font-size:.95rem;margin-bottom:12px;color:var(--accent)}
+  .fbar{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .fbar .fl{flex:0 0 130px;font-size:.85rem;color:var(--muted)}
+  .fbar .ftrack{flex:1;height:26px;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden}
+  .fbar .ffill{height:100%;border-radius:8px;display:flex;align-items:center;padding-left:10px;font-size:.8rem;font-weight:700;color:#04121a;min-width:40px;transition:width .6s}
+  .roas-box{background:linear-gradient(135deg,rgba(52,211,153,.14),rgba(34,211,238,.08));border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;margin:20px 0}
+  .roas-box .big{font-family:'Sora';font-size:2.6rem;font-weight:800;color:var(--green)}
+  .roas-box .lbl{color:var(--muted);font-size:.85rem}
+  .note-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:10px;padding:14px 16px;font-size:.9rem;color:#d8def0;line-height:1.55}
+  .rep-foot{padding:16px 32px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem;text-align:center}
+
+  @media print{
+    body{background:#fff}
+    .s-aurora,.s-grid,.s-cg,.s-home,header,.panel,.eyebrow,.sub,h1{display:none!important}
+    .layout{display:block}.wrap{max-width:100%;padding:0}
+    #report{border:none;border-radius:0;background:#0a0d16;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Client Reporting</div>
+    <h1>📊 Report Builder</h1>
+    <div class="sub">Punch in the numbers → a branded report you can print or PDF and send.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <!-- INPUTS -->
+    <div class="panel">
+      <h3>⚙️ Report inputs</h3>
+      <div class="fg"><label>Client / business name</label><input id="iClient" value="Milam Capital Group"></div>
+      <div class="fg"><label>Reporting period</label><input id="iPeriod" value="Aug 1–31, 2026"></div>
+      <div class="two">
+        <div class="fg"><label>Ad spend ($)</label><input id="iSpend" type="number" value="1200"></div>
+        <div class="fg"><label>Impressions</label><input id="iImp" type="number" value="84000"></div>
+      </div>
+      <div class="two">
+        <div class="fg"><label>Link clicks (visits)</label><input id="iClicks" type="number" value="1650"></div>
+        <div class="fg"><label>Leads / conversions</label><input id="iLeads" type="number" value="72"></div>
+      </div>
+      <div class="two">
+        <div class="fg"><label>Closed sales</label><input id="iSales" type="number" value="9"></div>
+        <div class="fg"><label>Avg. sale value ($)</label><input id="iVal" type="number" value="850"></div>
+      </div>
+      <div class="fg"><label>Summary note to client</label><input id="iNote" value="Strong month — cost per lead dropped 18% and we scaled the winning ad. Next up: retargeting site visitors who didn't convert."></div>
+      <div class="btnrow">
+        <button class="btn btn-print" onclick="window.print()">🖨 Print / Save PDF</button>
+        <button class="btn btn-ghost" onclick="location.reload()">↺ Reset</button>
+      </div>
+      <p style="font-size:.76rem;color:var(--muted);margin-top:12px">Everything updates live as you type. "Print" opens your browser's save-as-PDF.</p>
+    </div>
+
+    <!-- REPORT -->
+    <div id="report">
+      <div class="rep-head">
+        <div class="rep-brand">
+          <div class="rep-logo">◈</div>
+          <div><b>Stratford Advertisements</b><span>Meta Ads Performance Report</span></div>
+        </div>
+        <div class="rep-for"><div class="cn" id="rClient">Milam Capital Group</div><div class="pd" id="rPeriod">Aug 1–31, 2026</div></div>
+      </div>
+      <div class="rep-body">
+        <div class="kpis">
+          <div class="kpi" style="--kc:#22d3ee"><div class="kl">Ad Spend</div><div class="kv" id="kSpend">$1,200</div><div class="ks">paid directly to Meta</div></div>
+          <div class="kpi" style="--kc:#8b5cf6"><div class="kl">Impressions</div><div class="kv" id="kImp">84,000</div><div class="ks">times seen</div></div>
+          <div class="kpi" style="--kc:#ec4899"><div class="kl">Visits</div><div class="kv" id="kClicks">1,650</div><div class="ks" id="kCtr">1.96% CTR</div></div>
+          <div class="kpi" style="--kc:#fbbf24"><div class="kl">Leads</div><div class="kv" id="kLeads">72</div><div class="ks" id="kCpl">$16.67 / lead</div></div>
+          <div class="kpi" style="--kc:#34d399"><div class="kl">Sales</div><div class="kv" id="kSales">9</div><div class="ks" id="kRev">$7,650 revenue</div></div>
+        </div>
+
+        <div class="funnel">
+          <h4>Your customer funnel</h4>
+          <div class="fbar"><span class="fl">Saw your ad</span><div class="ftrack"><div class="ffill" id="fImp" style="background:#8b5cf6">84,000</div></div></div>
+          <div class="fbar"><span class="fl">Visited site</span><div class="ftrack"><div class="ffill" id="fClicks" style="background:#ec4899">1,650</div></div></div>
+          <div class="fbar"><span class="fl">Became a lead</span><div class="ftrack"><div class="ffill" id="fLeads" style="background:#fbbf24">72</div></div></div>
+          <div class="fbar"><span class="fl">Became a customer</span><div class="ftrack"><div class="ffill" id="fSales" style="background:#34d399">9</div></div></div>
+        </div>
+
+        <div class="roas-box">
+          <div class="big" id="rRoas">6.4×</div>
+          <div class="lbl">Return on ad spend — <span id="rRoasPlain">every $1 spent returned $6.40</span></div>
+        </div>
+
+        <h4>Summary</h4>
+        <div class="note-box" id="rNote">Strong month.</div>
+      </div>
+      <div class="rep-foot">Stratford Advertisements · Your ad budget stays on your card, paid directly to Meta — we only charge a flat management fee · Generated <span id="rDate"></span></div>
+    </div>
+  </div>
+</div>
+
+<script src="stratford.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const n=v=>(+v||0).toLocaleString();
+const money=v=>'$'+(+v||0).toLocaleString(undefined,{maximumFractionDigits:0});
+function upd(){
+  const spend=+$('iSpend').value||0, imp=+$('iImp').value||0, clicks=+$('iClicks').value||0,
+        leads=+$('iLeads').value||0, sales=+$('iSales').value||0, val=+$('iVal').value||0;
+  const rev=sales*val;
+  $('rClient').textContent=$('iClient').value||'Client';
+  $('rPeriod').textContent=$('iPeriod').value;
+  $('kSpend').textContent=money(spend);
+  $('kImp').textContent=n(imp);
+  $('kClicks').textContent=n(clicks);
+  $('kCtr').textContent=(imp?((clicks/imp)*100).toFixed(2):'0')+'% CTR';
+  $('kLeads').textContent=n(leads);
+  $('kCpl').textContent=(leads?money(spend/leads):'$0')+' / lead';
+  $('kSales').textContent=n(sales);
+  $('kRev').textContent=money(rev)+' revenue';
+  // funnel widths (relative to impressions, but keep min visibility)
+  const w=x=>imp?Math.max(4,(x/imp*100)):0;
+  $('fImp').style.width='100%'; $('fImp').textContent=n(imp);
+  $('fClicks').style.width=Math.max(18,w(clicks))+'%'; $('fClicks').textContent=n(clicks);
+  $('fLeads').style.width=Math.max(12,w(leads))+'%'; $('fLeads').textContent=n(leads);
+  $('fSales').style.width=Math.max(8,w(sales))+'%'; $('fSales').textContent=n(sales);
+  // roas
+  const roas=spend?rev/spend:0;
+  $('rRoas').textContent=roas.toFixed(1)+'×';
+  $('rRoasPlain').textContent='every $1 spent returned $'+roas.toFixed(2);
+  $('rNote').textContent=$('iNote').value;
+}
+['iClient','iPeriod','iSpend','iImp','iClicks','iLeads','iSales','iVal','iNote'].forEach(id=>$(id).addEventListener('input',upd));
+$('rDate').textContent=new Date().toLocaleDateString();
+upd();
+</script>
+</body>
+</html>
