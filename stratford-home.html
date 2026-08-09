@@ -113,6 +113,19 @@
   footer{text-align:center;padding:40px 22px;color:var(--s-muted);font-size:.88rem;border-top:1px solid var(--s-glass-brd)}
   footer a{color:var(--s-violet);text-decoration:none}
 
+  /* MONEY QUOTE banner */
+  .quote-banner{max-width:720px;margin:0 auto 30px;padding:20px 26px;border-radius:18px;
+    background:linear-gradient(150deg,rgba(251,191,36,.08),rgba(139,92,246,.06));
+    border:1px solid rgba(251,191,36,.22);position:relative;min-height:88px;
+    display:flex;flex-direction:column;justify-content:center}
+  .quote-banner .qmark{position:absolute;top:2px;left:16px;font-family:'Sora';font-size:3.2rem;
+    color:rgba(251,191,36,.3);line-height:1}
+  .quote-banner .qtext{font-family:'Sora';font-size:clamp(1.02rem,2.2vw,1.28rem);font-weight:600;
+    font-style:italic;line-height:1.4;transition:opacity .5s;position:relative;z-index:1}
+  .quote-banner .qtext .grad{background:linear-gradient(120deg,#fbbf24,#ec4899);-webkit-background-clip:text;
+    background-clip:text;-webkit-text-fill-color:transparent}
+  .quote-banner .qauthor{margin-top:8px;font-size:.85rem;color:var(--s-muted);transition:opacity .5s}
+
   /* ============ MOBILE / PHONE ============ */
   @media(max-width:680px){
     .wrap{padding:0 16px}
@@ -179,6 +192,11 @@
   <!-- HERO -->
   <section class="hero">
     <span class="pill"><span class="dot"></span> Now taking on new clients — 14 days free, no lock-in</span>
+    <div class="quote-banner">
+      <span class="qmark">“</span>
+      <div class="qtext" id="qText">The only thing standing between you and your goal is the <span class="grad">story you keep telling yourself.</span></div>
+      <div class="qauthor" id="qAuthor">— Jordan Belfort, The Wolf of Wall Street</div>
+    </div>
     <h1>Turn ad spend into <span class="grad">real customers</span>.</h1>
     <p class="sub">Stratford Advertisements builds and manages your Facebook &amp; Instagram ad campaigns end-to-end — so you get more leads and sales without touching a single setting. You keep full control of your money. We bring the strategy.</p>
     <div class="hero-cta">
@@ -344,6 +362,26 @@
   <p style="margin-top:14px">© 2026 Stratford Advertisements. All rights reserved.</p>
 </footer>
 
+<script>
+  // Rotating money quotes
+  const QUOTES=[
+    {t:'The only thing standing between you and your goal is the <span class="grad">story you keep telling yourself.</span>', a:'— Jordan Belfort, The Wolf of Wall Street'},
+    {t:'Act as if. Act as if you\'re a <span class="grad">wealthy man,</span> rich already — and then you\'ll become rich.', a:'— Jordan Belfort, The Wolf of Wall Street'},
+    {t:'The person who <span class="grad">doesn\'t advertise</span> to save money is like the man who stops the clock to save time.', a:'— Henry Ford'},
+    {t:'Money is a <span class="grad">terrible master</span> but an excellent servant.', a:'— P.T. Barnum'},
+    {t:'Doing business without advertising is like winking in the dark. <span class="grad">You know what you\'re doing, but nobody else does.</span>', a:'— Steuart Henderson Britt'},
+    {t:'The goal isn\'t more money. The goal is living life on <span class="grad">your terms.</span>', a:'— Chris Brogan'}
+  ];
+  (function(){
+    let i=0; const t=document.getElementById('qText'), a=document.getElementById('qAuthor');
+    if(!t) return;
+    setInterval(()=>{
+      t.style.opacity=0; a.style.opacity=0;
+      setTimeout(()=>{ i=(i+1)%QUOTES.length; t.innerHTML=QUOTES[i].t; a.textContent=QUOTES[i].a;
+        t.style.opacity=1; a.style.opacity=1; }, 500);
+    }, 5500);
+  })();
+</script>
 <script src="stratford.js"></script>
 </body>
 </html>
