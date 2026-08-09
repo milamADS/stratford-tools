@@ -112,6 +112,53 @@
 
   footer{text-align:center;padding:40px 22px;color:var(--s-muted);font-size:.88rem;border-top:1px solid var(--s-glass-brd)}
   footer a{color:var(--s-violet);text-decoration:none}
+
+  /* ============ MOBILE / PHONE ============ */
+  @media(max-width:680px){
+    .wrap{padding:0 16px}
+    section{padding:46px 0}
+    nav.topbar{padding:11px 16px}
+    .brand{font-size:.92rem;gap:8px}
+    .brand .lg{width:30px;height:30px;font-size:.9rem}
+    .navlinks{gap:0}
+    .navlinks .btn-primary{padding:9px 15px;font-size:.82rem}
+
+    .hero{padding-top:110px;padding-bottom:36px}
+    .pill{font-size:.74rem;padding:6px 13px;margin-bottom:20px}
+    .hero p.sub{font-size:1.02rem}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{width:100%;justify-content:center;padding:15px 22px;font-size:1rem}
+    .trust-row{flex-direction:column;gap:12px;align-items:center;margin-top:32px;font-size:.88rem}
+
+    .sec-head{margin-bottom:32px}
+    .card{padding:22px}
+    .card:hover{transform:none}
+
+    /* Money-flow stacks vertically with down-arrows */
+    .trust-block{padding:28px 20px}
+    .money-flow{flex-direction:column;gap:10px;margin:24px 0 6px}
+    .flow-node{width:100%;max-width:260px}
+    .flow-arrow{transform:rotate(90deg);font-size:1.3rem}
+
+    .step{gap:15px;padding:20px 0}
+    .step .num{width:44px;height:44px;font-size:1.05rem}
+    .step h3{font-size:1.12rem}
+
+    .price-card{padding:30px 22px}
+    .price-card .amt{font-size:2.7rem}
+
+    .faq summary{padding:16px 18px;font-size:.98rem}
+    .faq details p{padding:0 18px 18px}
+
+    .final-cta{padding:44px 22px}
+    .final-cta .btn{width:100%;justify-content:center;padding:15px 22px}
+  }
+
+  /* Bigger tap targets on any touch device */
+  @media(hover:none){
+    .btn{min-height:46px}
+    .faq summary{min-height:52px}
+  }
 </style>
 </head>
 <body>
