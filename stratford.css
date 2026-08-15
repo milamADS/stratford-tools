@@ -1,49 +1,48 @@
 /* ============================================================
-   STRATFORD TOOLS — Shared Design System
-   Premium glass + aurora aesthetic. Linked by every page.
+   STRATFORD TOOLS — Shared Design System (WHITE / Champagne-Gold)
+   Clean, premium, high-readability. Linked by every tool page.
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital@0;1&family=Jost:wght@300;400;500;600&display=swap');
 
 :root{
-  --s-bg:#0a0f1c; --s-ink:#eef2f8; --s-muted:#9aa4b6;
-  /* Gold/navy premium palette. Legacy vars remapped to gold tones so all pages shift cohesively. */
-  --s-violet:#d4a017; --s-pink:#f5c542; --s-cyan:#e8c778; --s-gold:#f5c542; --s-green:#34d399;
-  --s-glass:rgba(255,255,255,.04); --s-glass-brd:rgba(212,160,23,.14);
-  --s-glass-strong:rgba(255,255,255,.055);
+  --s-bg:#f7f4ee; --s-paper:#ffffff; --s-ink:#1c1913; --s-muted:#5c5346; --s-dim:#8a8069;
+  /* Champagne-gold palette. Legacy accent vars remapped so all pages shift cohesively. */
+  --s-violet:#7a63b8; --s-pink:#b9975b; --s-cyan:#5a9aa4; --s-gold:#b9975b; --s-champ:#b9975b; --s-champ-deep:#9a7c40; --s-green:#3f9d6a;
+  --s-glass:#ffffff; --s-glass-brd:rgba(185,151,91,.30);
+  --s-glass-strong:#fffdf9; --s-line-soft:rgba(28,25,19,.10);
 }
 
 /* Base */
 html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif !important; background:var(--s-bg) !important; color:var(--s-ink);
+body{font-family:'Jost',system-ui,sans-serif !important; font-weight:300; background:var(--s-bg) !important; color:var(--s-ink);
   overflow-x:hidden; position:relative; -webkit-font-smoothing:antialiased;}
 
-/* Aurora background (injected by JS) */
-.s-aurora{position:fixed; inset:0; z-index:-3; overflow:hidden; background:#06080f; pointer-events:none}
-.s-aurora span{position:absolute; display:block; border-radius:50%; filter:blur(95px); opacity:.5; mix-blend-mode:screen; animation:s-drift 28s ease-in-out infinite}
-.s-aurora .a1{width:52vw;height:52vw;left:-12vw;top:-14vw;background:radial-gradient(circle,#d4a017,transparent 62%);animation-delay:0s}
-.s-aurora .a2{width:46vw;height:46vw;right:-10vw;top:0;background:radial-gradient(circle,#8a6508,transparent 62%);animation-delay:-7s}
-.s-aurora .a3{width:44vw;height:44vw;left:16vw;bottom:-16vw;background:radial-gradient(circle,#1e3a5f,transparent 62%);animation-delay:-14s}
-.s-aurora .a4{width:32vw;height:32vw;right:12vw;bottom:-8vw;background:radial-gradient(circle,#f5c542,transparent 64%);opacity:.22;animation-delay:-20s}
-@keyframes s-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,4vh) scale(1.12)}66%{transform:translate(-4vw,-3vh) scale(.94)}}
+/* Soft light background wash (replaces dark aurora) */
+.s-aurora{position:fixed; inset:0; z-index:-3; overflow:hidden; pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 6%, rgba(185,151,91,.07), transparent 42%),
+    radial-gradient(circle at 88% 2%, rgba(185,151,91,.05), transparent 40%),
+    linear-gradient(165deg,#faf8f3 0%, #f5f1e9 60%, #f7f4ee 100%);}
+.s-aurora span{display:none}
 .s-grid{position:fixed; inset:0; z-index:-2; pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
-  background-size:54px 54px; mask-image:radial-gradient(ellipse at 50% 0%,#000 25%,transparent 80%)}
+  background-image:linear-gradient(rgba(28,25,19,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(28,25,19,.025) 1px,transparent 1px);
+  background-size:54px 54px; mask-image:radial-gradient(ellipse at 50% 0%,#000 20%,transparent 75%)}
 .s-cg{position:fixed; width:520px; height:520px; border-radius:50%; z-index:-1; pointer-events:none; transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(212,160,23,.12),transparent 60%); transition:opacity .4s; opacity:0}
+  background:radial-gradient(circle,rgba(185,151,91,.10),transparent 60%); transition:opacity .4s; opacity:0}
 
 /* Home button that floats top-left on every tool page */
 .s-home{position:fixed; top:18px; left:18px; z-index:60; display:inline-flex; align-items:center; gap:9px;
-  padding:9px 15px 9px 11px; border-radius:30px; text-decoration:none; color:var(--s-ink); font-weight:600; font-size:.84rem; font-family:'Inter';
-  background:var(--s-glass); border:1px solid var(--s-glass-brd); backdrop-filter:blur(14px); transition:.22s}
-.s-home:hover{background:rgba(255,255,255,.09); transform:translateY(-1px)}
-.s-home .lg{width:24px; height:24px; border-radius:8px; background:conic-gradient(from 210deg,#f5c542,#d4a017,#8a6508,#f5c542); display:grid; place-items:center; font-size:.7rem}
+  padding:9px 15px 9px 11px; border-radius:30px; text-decoration:none; color:var(--s-ink); font-weight:500; font-size:.82rem; font-family:'Jost';
+  background:var(--s-paper); border:1px solid var(--s-glass-brd); box-shadow:0 4px 14px rgba(28,25,19,.08); transition:.22s}
+.s-home:hover{background:#fffdf9; transform:translateY(-1px); box-shadow:0 6px 18px rgba(154,124,64,.16)}
+.s-home .lg{width:24px; height:24px; border-radius:8px; background:conic-gradient(from 210deg,#e3c9a0,#b9975b,#9a7c40,#e3c9a0); display:grid; place-items:center; font-size:.7rem; color:#fff}
 
-/* Headings use Sora everywhere */
-h1,h2,h3,.s-font{font-family:'Sora',sans-serif !important; letter-spacing:-.02em}
+/* Headings use Italiana display serif everywhere */
+h1,h2,h3,.s-font{font-family:'Italiana',serif !important; letter-spacing:.01em; font-weight:400}
 
-/* Reusable glass utility */
-.s-glass{background:linear-gradient(160deg,var(--s-glass-strong),rgba(255,255,255,.02)) !important;
-  border:1px solid var(--s-glass-brd) !important; backdrop-filter:blur(16px) !important}
+/* Reusable card utility (was glass) */
+.s-glass{background:var(--s-paper) !important;
+  border:1px solid var(--s-line-soft) !important; box-shadow:0 6px 20px rgba(28,25,19,.05) !important}
 
 /* Reveal on scroll */
 .s-reveal{opacity:0; transform:translateY(22px); transition:opacity .7s, transform .7s}
@@ -51,7 +50,7 @@ h1,h2,h3,.s-font{font-family:'Sora',sans-serif !important; letter-spacing:-.02em
 
 /* Custom scrollbar */
 ::-webkit-scrollbar{width:11px}
-::-webkit-scrollbar-track{background:#0a0d16}
-::-webkit-scrollbar-thumb{background:linear-gradient(#f5c542,#a8790f); border-radius:20px; border:3px solid #0a0d16}
+::-webkit-scrollbar-track{background:#efe9dd}
+::-webkit-scrollbar-thumb{background:linear-gradient(#cdb489,#9a7c40); border-radius:20px; border:3px solid #efe9dd}
 
 @media(max-width:600px){.s-home{top:12px;left:12px;padding:8px 13px}}

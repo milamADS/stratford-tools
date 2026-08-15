@@ -3,136 +3,362 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Tracker — Stratford</title>
-<link rel="stylesheet" href="stratford.css">
+<title>Client Tracker — Stratford Advertisements</title>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital@0;1&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  :root{--bg:#0a0d16;--panel:rgba(255,255,255,.045);--border:rgba(255,255,255,.09);--text:#eef3fb;--muted:#94a0b8;--accent:#22d3ee;--violet:#8b5cf6;--pink:#ec4899;--green:#34d399;--gold:#fbbf24;--red:#f87171}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;background:transparent;padding:0 0 60px}
-  .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
-  header{text-align:center;padding:60px 22px 6px}
-  .eyebrow{display:inline-block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--violet);background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);padding:6px 14px;border-radius:20px;margin-bottom:16px}
-  h1{font-size:2.4rem;font-weight:800;letter-spacing:-.03em;background:linear-gradient(120deg,#8b5cf6,#22d3ee,#34d399);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 7s linear infinite}
-  @keyframes sh{to{background-position:200% center}}
-  .sub{color:var(--muted);margin-top:8px}
+  :root{
+    --bg:#f7f4ee;
+    --bg-2:#ffffff;
+    --paper:#ffffff;
+    --panel:#ffffff;
+    --panel-2:#fffdf9;
+    --border:rgba(185,151,91,.30);
+    --border-soft:rgba(28,25,19,.10);
+    --ink:#1c1913;
+    --ink-soft:#5c5346;
+    --ink-dim:#8a8069;
+    --champagne:#b9975b;
+    --champ-bright:#9a7c40;
+    --gold:#b9975b;
+    --green:#3f9d6a;
+    --red:#d0604b;
+    --violet:#7a63b8;
+    --cyan:#5a9aa4;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Jost',sans-serif;font-weight:300;color:var(--ink);min-height:100vh;padding:0 0 70px;letter-spacing:.01em;
+    background:
+      radial-gradient(circle at 12% 6%, rgba(185,151,91,.06), transparent 40%),
+      linear-gradient(165deg,#faf8f3 0%, #f5f1e9 60%, #f7f4ee 100%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:0 22px;position:relative;z-index:1}
 
-  .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:26px 0 18px}
-  .mrr{background:linear-gradient(135deg,rgba(52,211,153,.16),rgba(34,211,238,.08));border:1px solid var(--border);border-radius:14px;padding:12px 20px;backdrop-filter:blur(12px)}
-  .mrr b{font-family:'Sora';font-size:1.5rem;color:var(--green)}
-  .mrr span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;display:block}
-  .btn{border:none;cursor:pointer;font-weight:700;font-size:.9rem;padding:11px 18px;border-radius:10px;transition:.2s;background:linear-gradient(135deg,var(--violet),var(--accent));color:#fff}
-  .btn:hover{transform:translateY(-2px)}
-  .btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
+  /* HEADER */
+  header{padding:46px 0 8px;border-bottom:1px solid var(--border-soft);margin-bottom:30px}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
+  .brand{font-family:'Italiana',serif;font-size:1.15rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+  .brand span{display:block;font-size:.5rem;letter-spacing:.44em;color:var(--champagne);margin-top:3px}
+  .eyebrow{font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--champagne);margin-bottom:14px}
+  h1{font-family:'Italiana',serif;font-size:clamp(2rem,4.5vw,3.1rem);font-weight:400;line-height:1.05;letter-spacing:.01em}
+  h1 .script{font-family:'Playfair Display',serif;font-style:italic;color:var(--champagne)}
+  .sub{color:var(--ink-soft);margin-top:10px;font-size:.98rem;max-width:520px}
 
+  /* KPI + CHART ROW */
+  .dash{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;margin:30px 0 22px}
+  @media(max-width:900px){.dash{grid-template-columns:1fr}}
+  .card{background:var(--paper);border:1px solid var(--border-soft);border-radius:18px;padding:22px 24px;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(28,25,19,.04)}
+  .card::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent,rgba(205,180,137,.5),transparent)}
+  .card-lbl{font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;color:var(--champagne);margin-bottom:6px}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .kpi{background:var(--paper);border:1px solid var(--border-soft);border-radius:16px;padding:20px;position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(28,25,19,.04)}
+  .kpi::after{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--champagne)}
+  .kpi .val{font-family:'Italiana',serif;font-size:2.2rem;line-height:1.15;color:var(--ink);padding-top:2px}
+  .kpi.accent .val{color:var(--champ-bright)}
+  .kpi .val small{font-size:1rem;color:var(--ink-soft)}
+  .kpi .cap{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);margin-top:12px}
+  .kpi .spark{position:absolute;right:16px;top:16px;opacity:.5}
+
+  /* charts */
+  .chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .chart-head h3{font-family:'Italiana',serif;font-weight:400;font-size:1.15rem}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+  .legend span{font-size:.72rem;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
+  .legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+
+  /* CONTROL BAR */
+  .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:6px 0 20px}
+  .bar h2{font-family:'Italiana',serif;font-weight:400;font-size:1.5rem}
+  .actions{display:flex;gap:10px}
+  .btn{border:1px solid var(--champagne);cursor:pointer;font-family:'Jost',sans-serif;font-weight:500;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;padding:12px 22px;border-radius:10px;transition:.25s;background:var(--champagne);color:#12100c}
+  .btn:hover{background:transparent;color:var(--champ-bright)}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--champagne);color:var(--ink)}
+
+  /* BOARD */
   .board{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
   @media(max-width:1000px){.board{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:560px){.board{grid-template-columns:1fr}}
-  .col{background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--border);border-radius:16px;padding:14px;min-height:200px;backdrop-filter:blur(12px)}
-  .col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-  .col-head .name{font-family:'Sora';font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:7px}
-  .col-head .dot{width:9px;height:9px;border-radius:50%}
-  .col-head .count{font-size:.75rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:10px}
-  .lead-card{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:9px;cursor:grab;transition:.15s;border-left:3px solid var(--lc,#8b5cf6)}
-  .lead-card:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
-  .lead-card.dragging{opacity:.4}
-  .lead-card .ln{font-weight:700;font-size:.92rem;margin-bottom:3px}
-  .lead-card .li{font-size:.78rem;color:var(--muted)}
-  .lead-card .lfee{font-size:.78rem;color:var(--green);font-weight:600;margin-top:4px}
-  .lead-card .del{float:right;color:var(--muted);cursor:pointer;font-size:.85rem;opacity:0;transition:.15s}
+  .col{background:#fbf9f4;border:1px solid var(--border-soft);border-radius:16px;padding:15px 14px;min-height:220px;transition:.2s}
+  .col-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid var(--border-soft)}
+  .col-head .name{font-family:'Jost';font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;display:flex;align-items:center;gap:8px;color:var(--ink)}
+  .col-head .dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 10px currentColor}
+  .col-head .count{font-size:.7rem;color:var(--ink-dim);background:rgba(255,255,255,.05);padding:3px 9px;border-radius:10px;font-weight:400}
+  .lead-card{background:var(--paper);border:1px solid var(--border-soft);border-radius:12px;padding:14px;margin-bottom:10px;cursor:grab;transition:.18s;border-left:3px solid var(--lc,var(--champagne));position:relative;box-shadow:0 2px 8px rgba(28,25,19,.04)}
+  .lead-card:hover{background:#fffdf9;transform:translateY(-2px);box-shadow:0 6px 16px rgba(28,25,19,.08)}
+  .lead-card.dragging{opacity:.35}
+  .lead-card .ln{font-family:'Jost';font-weight:500;font-size:.92rem;margin-bottom:4px;color:var(--ink);letter-spacing:.01em}
+  .lead-card .li{font-size:.78rem;color:var(--ink-soft);font-weight:300;line-height:1.5}
+  .lead-card .lfee{font-size:.78rem;color:var(--champ-bright);font-weight:500;margin-top:8px;letter-spacing:.04em}
+  .lead-card .del{position:absolute;top:10px;right:11px;color:var(--ink-dim);cursor:pointer;font-size:.85rem;opacity:0;transition:.15s}
   .lead-card:hover .del{opacity:1}
   .lead-card .del:hover{color:var(--red)}
-  .col.dragover{border-color:var(--accent);background:rgba(34,211,238,.06)}
-  .addlead{width:100%;background:transparent;border:1px dashed var(--border);color:var(--muted);border-radius:10px;padding:9px;cursor:pointer;font-size:.82rem;transition:.15s}
-  .addlead:hover{border-color:var(--violet);color:var(--text)}
-  .empty-hint{color:var(--muted);font-size:.78rem;text-align:center;padding:10px 0;opacity:.7}
+  .col.dragover{border-color:var(--champagne);background:rgba(205,180,137,.06)}
+  .addlead{width:100%;background:transparent;border:1px dashed var(--border);color:var(--ink-dim);border-radius:10px;padding:10px;cursor:pointer;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;transition:.18s;font-family:'Jost'}
+  .addlead:hover{border-color:var(--champagne);color:var(--ink-soft)}
+  .empty-hint{color:var(--ink-dim);font-size:.76rem;text-align:center;padding:14px 0;opacity:.6;font-style:italic}
 
-  /* modal */
-  .overlay{position:fixed;inset:0;background:rgba(5,7,12,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  /* MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(28,25,19,.35);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
   .overlay.show{display:flex}
-  .modal{background:linear-gradient(160deg,#141b2b,#0d1220);border:1px solid var(--border);border-radius:18px;width:100%;max-width:440px;padding:26px}
-  .modal h2{font-family:'Sora';font-size:1.2rem;margin-bottom:18px}
-  .fg{margin-bottom:14px}.fg label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
-  .fg input,.fg select{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
-  .fg input:focus,.fg select:focus{outline:none;border-color:var(--accent)}
-  .mfoot{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
-  footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:36px}
+  .modal{background:var(--paper);border:1px solid var(--border);border-radius:20px;width:100%;max-width:450px;padding:30px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(28,25,19,.25)}
+  .modal::before{content:"";position:absolute;inset:0 0 auto 0;height:1px;background:linear-gradient(90deg,transparent,var(--champagne),transparent)}
+  .modal h2{font-family:'Italiana',serif;font-weight:400;font-size:1.4rem;margin-bottom:22px}
+  .fg{margin-bottom:16px}
+  .fg label{display:block;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+  .fg input,.fg select{width:100%;background:#fbf9f4;border:1px solid var(--border-soft);color:var(--ink);padding:12px 14px;border-radius:10px;font-size:.94rem;font-family:'Jost';font-weight:300}
+  .fg input:focus,.fg select:focus{outline:none;border-color:var(--champagne);background:#fff}
+  .mfoot{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+  footer{text-align:center;color:var(--ink-dim);font-size:.72rem;letter-spacing:.1em;margin-top:44px;text-transform:uppercase}
+  footer .champ{color:var(--champagne)}
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="eyebrow">Mini-CRM</div>
-    <h1>🗂️ Client Tracker</h1>
-    <div class="sub">Drag leads through your pipeline. Nothing falls through the cracks. Saves in your browser.</div>
-  </div>
-</header>
 
 <div class="wrap">
-  <div class="bar">
-    <div class="mrr"><b id="mrr">$0</b><span>Monthly recurring revenue (paying)</span></div>
-    <div style="display:flex;gap:10px">
-      <button class="btn" id="addBtn">+ Add Lead</button>
-      <button class="btn btn-ghost" id="exportBtn">⬇ Export</button>
+  <header>
+    <div class="top">
+      <div>
+        <div class="eyebrow">Pipeline · Mini-CRM</div>
+        <h1>Client <span class="script">Tracker</span></h1>
+        <div class="sub">Every prospect, every stage — nothing falls through the cracks. Drag cards to move deals. Saves automatically.</div>
+      </div>
+      <div class="brand">Stratford<span>Advertisements</span></div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="dash">
+    <!-- MRR trend chart -->
+    <div class="card">
+      <div class="chart-head">
+        <h3>Revenue Momentum</h3>
+        <div class="card-lbl" style="margin:0">MRR over time</div>
+      </div>
+      <canvas id="mrrChart" height="150"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--champagne)"></i> Monthly recurring revenue</span>
+        <span><i style="background:var(--violet)"></i> Pipeline value (potential)</span>
+      </div>
+    </div>
+
+    <!-- KPIs + donut -->
+    <div style="display:grid;gap:18px">
+      <div class="kpis">
+        <div class="kpi accent">
+          <div class="val" id="kMrr">$0</div>
+          <div class="cap">Monthly Recurring</div>
+        </div>
+        <div class="kpi">
+          <div class="val" id="kPipe">$0</div>
+          <div class="cap">Pipeline Value</div>
+        </div>
+        <div class="kpi">
+          <div class="val" id="kLeads">0</div>
+          <div class="cap">Active Prospects</div>
+        </div>
+        <div class="kpi">
+          <div class="val" id="kPaying">0</div>
+          <div class="cap">Paying Clients</div>
+        </div>
+      </div>
+      <div class="card" style="padding:18px 22px">
+        <div class="chart-head"><h3 style="font-size:1.05rem">Pipeline by Stage</h3></div>
+        <div style="display:flex;align-items:center;gap:18px">
+          <canvas id="donut" width="120" height="120"></canvas>
+          <div id="donutLegend" style="display:grid;gap:7px;flex:1"></div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- CONTROL BAR -->
+  <div class="bar">
+    <h2>The Pipeline</h2>
+    <div class="actions">
+      <button class="btn" id="addBtn">+ Add Lead</button>
+      <button class="btn btn-ghost" id="exportBtn">Export</button>
+    </div>
+  </div>
+
   <div class="board" id="board"></div>
-  <footer>🗂️ Client Tracker · Built by Jarvis for Ethan · Drag cards between stages · Saves automatically</footer>
+
+  <footer>Client Tracker · Built by Jarvis for Ethan · <span class="champ">Drag cards between stages</span> · Saves in your browser</footer>
 </div>
 
 <div class="overlay" id="overlay">
   <div class="modal">
     <h2 id="mTitle">Add Lead</h2>
-    <div class="fg"><label>Business name</label><input id="fName" placeholder="e.g. Acme Roofing"></div>
-    <div class="fg"><label>Contact / notes</label><input id="fInfo" placeholder="e.g. John — 555-1234, met at expo"></div>
+    <div class="fg"><label>Business name</label><input id="fName" placeholder="e.g. Wildhorn Capital"></div>
+    <div class="fg"><label>Contact / notes</label><input id="fInfo" placeholder="e.g. John — 555-1234, Austin multifamily"></div>
     <div class="fg"><label>Monthly fee ($)</label><input id="fFee" type="number" placeholder="1500"></div>
     <div class="fg"><label>Stage</label><select id="fStage"></select></div>
     <div class="mfoot"><button class="btn btn-ghost" id="cancelBtn">Cancel</button><button class="btn" id="saveBtn">Save</button></div>
   </div>
 </div>
 
-<script src="stratford.js"></script>
 <script>
 const STAGES=[
-  {id:'lead',name:'🎯 Lead',color:'#8b5cf6'},
-  {id:'contacted',name:'📞 Contacted',color:'#22d3ee'},
-  {id:'pitched',name:'📄 Pitched',color:'#ec4899'},
-  {id:'trial',name:'🎁 Trial',color:'#fbbf24'},
-  {id:'paying',name:'💰 Paying',color:'#34d399'}
+  {id:'lead',name:'Lead',color:'#7a63b8'},
+  {id:'contacted',name:'Contacted',color:'#5a9aa4'},
+  {id:'pitched',name:'Pitched',color:'#b9975b'},
+  {id:'trial',name:'Trial',color:'#d4a84a'},
+  {id:'paying',name:'Paying',color:'#3f9d6a'}
 ];
-const KEY='***';
+const KEY='stratford_clients_v1';
 let data=[]; let editId=null;
 function uid(){return Math.random().toString(36).slice(2,9)}
 function load(){try{data=JSON.parse(localStorage.getItem(KEY))||seed();}catch(e){data=seed();}}
 function seed(){return [
-  {id:uid(),name:'Milam Capital Group',info:'First client — campaign in setup',fee:1500,stage:'trial'},
-  {id:uid(),name:'(example) Acme Roofing',info:'Add your real leads →',fee:1200,stage:'lead'}
+  {id:uid(),name:'Milam Capital Group',info:'First client — investor campaign in setup',fee:1500,stage:'trial'},
+  {id:uid(),name:'(example) Wildhorn Capital',info:'Add your real leads →',fee:1500,stage:'lead'}
 ];}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));}
 const $=id=>document.getElementById(id);
 const money=v=>'$'+(+v||0).toLocaleString();
+const STATIC=/[?&]static/.test(location.search); // ?static = no animation (for screenshots)
+
+/* ---- MRR history (persisted daily snapshots for the trend line) ---- */
+const HKEY='stratford_mrr_history_v1';
+function mrrNow(){return data.filter(d=>d.stage==='paying').reduce((a,d)=>a+(+d.fee||0),0);}
+function pipeNow(){return data.filter(d=>d.stage!=='paying').reduce((a,d)=>a+(+d.fee||0),0);}
+function snapHistory(){
+  let h=[]; try{h=JSON.parse(localStorage.getItem(HKEY))||[]}catch(e){h=[]}
+  const today=new Date().toISOString().slice(0,10);
+  const rec={d:today,mrr:mrrNow(),pipe:pipeNow()};
+  if(h.length && h[h.length-1].d===today){h[h.length-1]=rec;} else {h.push(rec);}
+  if(h.length>30)h=h.slice(-30);
+  localStorage.setItem(HKEY,JSON.stringify(h));
+  return h;
+}
 
 function render(){
   const board=$('board'); board.innerHTML='';
   STAGES.forEach(s=>{
     const items=data.filter(d=>d.stage===s.id);
     const col=document.createElement('div'); col.className='col'; col.dataset.stage=s.id;
-    col.innerHTML=`<div class="col-head"><span class="name"><span class="dot" style="background:${s.color}"></span>${s.name}</span><span class="count">${items.length}</span></div>`+
+    col.innerHTML=`<div class="col-head"><span class="name"><span class="dot" style="background:${s.color};color:${s.color}"></span>${s.name}</span><span class="count">${items.length}</span></div>`+
       items.map(d=>`<div class="lead-card" draggable="true" data-id="${d.id}" style="--lc:${s.color}">
           <span class="del" onclick="delLead(event,'${d.id}')">✕</span>
           <div class="ln" onclick="editLead('${d.id}')">${esc(d.name)}</div>
           <div class="li">${esc(d.info||'')}</div>
-          ${d.fee?`<div class="lfee">${money(d.fee)}/mo</div>`:''}
+          ${d.fee?`<div class="lfee">${money(d.fee)} / mo</div>`:''}
         </div>`).join('')+
       (items.length?'':'<div class="empty-hint">Drop leads here</div>')+
       `<button class="addlead" onclick="addTo('${s.id}')">+ add</button>`;
     board.appendChild(col);
   });
   wireDnD();
-  $('mrr').textContent=money(data.filter(d=>d.stage==='paying').reduce((a,d)=>a+(+d.fee||0),0));
+  updateStats();
   save();
 }
 function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
+function updateStats(){
+  const mrr=mrrNow(), pipe=pipeNow();
+  animateVal('kMrr',mrr,true);
+  animateVal('kPipe',pipe,true);
+  animateVal('kLeads',data.filter(d=>d.stage!=='paying').length,false);
+  animateVal('kPaying',data.filter(d=>d.stage==='paying').length,false);
+  const h=snapHistory();
+  drawMrrChart(h);
+  drawDonut();
+}
+function animateVal(id,target,dollar){
+  const el=$(id);
+  if(STATIC){el.textContent=dollar?money(target):target;el.dataset.v=target;return;}
+  const start=parseFloat((el.dataset.v||0)); const t0=performance.now(); const dur=650;
+  function step(t){const p=Math.min(1,(t-t0)/dur);const e=1-Math.pow(1-p,3);const v=start+(target-start)*e;
+    el.textContent=dollar?money(Math.round(v)):Math.round(v);
+    if(p<1)requestAnimationFrame(step); else el.dataset.v=target;}
+  requestAnimationFrame(step);
+}
+
+/* ---- MRR line chart (animated) ---- */
+let mrrAnim=0;
+function drawMrrChart(h){
+  const c=$('mrrChart'); const dpr=window.devicePixelRatio||1;
+  const w=c.clientWidth||c.parentElement.clientWidth-48; const ht=150;
+  c.width=w*dpr; c.height=ht*dpr; const x=c.getContext('2d'); x.scale(dpr,dpr);
+  // ensure at least 2 points so a line renders
+  let pts=h.slice(); if(pts.length===1)pts=[{d:'',mrr:0,pipe:0},pts[0]];
+  if(pts.length===0)pts=[{d:'',mrr:0,pipe:0},{d:'',mrr:0,pipe:0}];
+  const maxV=Math.max(1,...pts.map(p=>Math.max(p.mrr,p.pipe)))*1.15;
+  const pad={l:8,r:8,t:12,b:10};
+  const plotW=w-pad.l-pad.r, plotH=ht-pad.t-pad.b;
+  const X=i=>pad.l+(plotW*(pts.length===1?0.5:i/(pts.length-1)));
+  const Y=v=>pad.t+plotH-(plotH*(v/maxV));
+  cancelAnimationFrame(mrrAnim);
+  const t0=performance.now(), dur=900;
+  function paint(prog){
+    x.clearRect(0,0,w,ht);
+    x.strokeStyle='rgba(28,25,19,.06)'; x.lineWidth=1;
+    for(let g=0;g<=3;g++){const gy=pad.t+plotH*(g/3);x.beginPath();x.moveTo(pad.l,gy);x.lineTo(w-pad.r,gy);x.stroke();}
+    drawSeries(x,pts,'pipe',X,Y,prog,'rgba(122,99,184,',[122,99,184]);
+    drawSeries(x,pts,'mrr',X,Y,prog,'rgba(185,151,91,',[185,151,91]);
+  }
+  paint(1); if(STATIC)return;
+  function frame(t){const prog=Math.min(1,(t-t0)/dur);paint(prog);if(prog<1)mrrAnim=requestAnimationFrame(frame);else paint(1);}
+  mrrAnim=requestAnimationFrame(frame);
+}
+function drawSeries(x,pts,key,X,Y,prog,rgba,rgb){
+  const n=pts.length; const shown=1+(n-1)*prog;
+  // area fill
+  x.beginPath();
+  for(let i=0;i<n;i++){ if(i>shown)break; const px=X(i),py=Y(pts[i][key]); i===0?x.moveTo(px,py):x.lineTo(px,py); }
+  const lastI=Math.min(n-1,Math.floor(shown));
+  x.lineTo(X(lastI),Y(0)); x.lineTo(X(0),Y(0)); x.closePath();
+  const grad=x.createLinearGradient(0,0,0,150);
+  grad.addColorStop(0,rgba+'.22)'); grad.addColorStop(1,rgba+'0)');
+  x.fillStyle=grad; x.fill();
+  // line
+  x.beginPath();
+  for(let i=0;i<n;i++){ if(i>shown)break; const px=X(i),py=Y(pts[i][key]); i===0?x.moveTo(px,py):x.lineTo(px,py); }
+  x.strokeStyle='rgb('+rgb.join(',')+')'; x.lineWidth=2.2; x.lineJoin='round'; x.stroke();
+  // end dot
+  if(prog>=1){const px=X(n-1),py=Y(pts[n-1][key]);x.beginPath();x.arc(px,py,3.5,0,7);x.fillStyle='rgb('+rgb.join(',')+')';x.fill();
+    x.beginPath();x.arc(px,py,6,0,7);x.strokeStyle=rgba+'.4)';x.stroke();}
+}
+
+/* ---- donut (animated) ---- */
+let donutAnim=0;
+function drawDonut(){
+  const c=$('donut'); const dpr=window.devicePixelRatio||1; const sz=120;
+  c.width=sz*dpr;c.height=sz*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);
+  const counts=STAGES.map(s=>({s,n:data.filter(d=>d.stage===s.id).length}));
+  const total=counts.reduce((a,b)=>a+b.n,0)||1;
+  const cx=sz/2,cy=sz/2,R=52,r=34;
+  cancelAnimationFrame(donutAnim);
+  const t0=performance.now(),dur=800;
+  function frame(t){
+    const prog=STATIC?1:Math.min(1,(t-t0)/dur);
+    x.clearRect(0,0,sz,sz);
+    let ang=-Math.PI/2;
+    counts.forEach(({s,n})=>{
+      const slice=(n/total)*Math.PI*2*prog;
+      if(n>0){
+        x.beginPath();x.arc(cx,cy,R,ang,ang+slice);x.arc(cx,cy,r,ang+slice,ang,true);x.closePath();
+        x.fillStyle=s.color;x.globalAlpha=.92;x.fill();x.globalAlpha=1;
+      }
+      ang+=(n/total)*Math.PI*2;
+    });
+    // center total
+    x.fillStyle='#1c1913';x.font='400 22px Italiana, serif';x.textAlign='center';x.textBaseline='middle';
+    x.fillText(String(data.length),cx,cy-4);
+    x.fillStyle='#8a8069';x.font='300 8px Jost, sans-serif';x.fillText('DEALS',cx,cy+12);
+    if(!STATIC && prog<1)donutAnim=requestAnimationFrame(frame);
+  }
+  donutAnim=requestAnimationFrame(frame);
+  // legend
+  const leg=$('donutLegend');
+  leg.innerHTML=counts.map(({s,n})=>`<span style="font-size:.74rem;color:#5c5346;display:flex;align-items:center;gap:8px"><i style="width:9px;height:9px;border-radius:3px;background:${s.color};display:inline-block"></i>${s.name}<b style="margin-left:auto;color:#1c1913;font-weight:500">${n}</b></span>`).join('');
+}
+
+/* ---- drag & drop ---- */
 let dragId=null;
 function wireDnD(){
   document.querySelectorAll('.lead-card').forEach(c=>{
@@ -154,7 +380,7 @@ function openModal(d,stage){
   $('mTitle').textContent=d?'Edit Lead':'Add Lead';
   $('fName').value=d?d.name:''; $('fInfo').value=d?d.info:''; $('fFee').value=d?d.fee:'';
   fillStages(d?d.stage:(stage||'lead'));
-  $('overlay').classList.add('show'); $('fName').focus();
+  $('overlay').classList.add('show'); setTimeout(()=>$('fName').focus(),50);
 }
 function closeModal(){$('overlay').classList.remove('show');editId=null;}
 $('addBtn').onclick=()=>openModal(null,'lead');
@@ -171,6 +397,7 @@ $('exportBtn').onclick=()=>{
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clients-'+new Date().toISOString().slice(0,10)+'.json';a.click();
 };
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+window.addEventListener('resize',()=>{let h=[];try{h=JSON.parse(localStorage.getItem(HKEY))||[]}catch(e){}drawMrrChart(h);});
 load();render();
 </script>
 </body>

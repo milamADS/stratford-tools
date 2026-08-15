@@ -6,7 +6,7 @@
 <title>Proposal Builder — Stratford</title>
 <link rel="stylesheet" href="stratford.css">
 <style>
-  :root{--bg:#0a0d16;--panel:rgba(255,255,255,.045);--border:rgba(255,255,255,.09);--text:#eef3fb;--muted:#94a0b8;--accent:#8b5cf6;--cyan:#22d3ee;--pink:#ec4899;--green:#34d399;--gold:#fbbf24}
+  :root{--bg:#f7f4ee;--panel:#ffffff;--border:rgba(28,25,19,.10);--text:#1c1913;--muted:#5c5346;--accent:#7a63b8;--cyan:#5a9aa4;--pink:#9a7c40;--green:#3f9d6a;--gold:#b9975b}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',sans-serif;color:var(--text);min-height:100vh;background:transparent;padding:0 0 60px}
   .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
@@ -21,16 +21,16 @@
   .panel h3{font-family:'Sora';font-size:1rem;margin-bottom:14px;color:var(--accent)}
   .fg{margin-bottom:12px}
   .fg label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:5px}
-  .fg input{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
+  .fg input{width:100%;background:#fbf9f4;border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:9px;font-size:.92rem;font-family:inherit}
   .fg input:focus{outline:none;border-color:var(--accent)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .btn{border:none;cursor:pointer;font-weight:700;font-size:.88rem;padding:11px 16px;border-radius:10px;transition:.2s;width:100%;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;margin-top:6px}
   .btn:hover{transform:translateY(-2px)}
 
-  #doc{background:linear-gradient(160deg,#0c1120,#0a0d16);border:1px solid var(--border);border-radius:18px;overflow:hidden}
-  .d-head{padding:34px;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(236,72,153,.1));border-bottom:1px solid var(--border)}
+  #doc{background:#ffffff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 8px 28px rgba(28,25,19,.06)}
+  .d-head{padding:34px;background:linear-gradient(135deg,#fffdf9,#f6f0e4);border-bottom:1px solid var(--border)}
   .d-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-  .d-logo{width:44px;height:44px;border-radius:12px;background:conic-gradient(from 210deg,#8b5cf6,#ec4899,#22d3ee,#8b5cf6);display:grid;place-items:center;font-size:1.1rem}
+  .d-logo{width:44px;height:44px;border-radius:12px;background:conic-gradient(from 210deg,#e3c9a0,#b9975b,#9a7c40,#e3c9a0);display:grid;place-items:center;font-size:1.1rem;color:#fff}
   .d-brand b{font-family:'Sora';font-size:1.15rem}
   .d-head h2{font-family:'Sora';font-size:1.9rem;font-weight:800;letter-spacing:-.02em}
   .d-head .forwho{color:var(--muted);margin-top:6px}
@@ -43,7 +43,7 @@
   .stepc .num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;font-weight:700;display:grid;place-items:center;font-size:.8rem;margin-bottom:8px}
   .stepc b{font-size:.9rem;display:block;margin-bottom:3px}
   .stepc span{font-size:.8rem;color:var(--muted)}
-  .price-box{background:linear-gradient(135deg,rgba(52,211,153,.14),rgba(139,92,246,.08));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:8px 0}
+  .price-box{background:linear-gradient(135deg,#f6f0e4,#fffdf9);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin:8px 0}
   .price-box .amt{font-family:'Sora';font-size:2.6rem;font-weight:800}
   .price-box .amt small{font-size:1rem;color:var(--muted);font-weight:400}
   .price-box .free{margin-top:8px;color:var(--green);font-weight:700}
