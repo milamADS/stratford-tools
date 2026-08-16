@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Client Access Tracker — Stratford</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0b1016;--surface:#121a24;--surface2:#18222f;--border:#20303f;
+    --accent:#22d3ee;--violet:#7c5cfc;--green:#34d399;--amber:#fbbf24;--red:#f87171;
+    --text:#e8f0f7;--muted:#7b8da0;
+  }
+  body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:24px 16px;max-width:1000px;margin:0 auto}
+  h1{font-size:1.6rem;margin-bottom:4px}
+  .sub{color:var(--muted);font-size:.92rem;margin-bottom:8px}
+  .safe{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.4);border-radius:10px;padding:14px 16px;font-size:.86rem;margin:18px 0;color:#bff3df}
+  .safe b{color:var(--green)}
+  .danger{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.35);border-radius:10px;padding:14px 16px;font-size:.84rem;margin:0 0 22px;color:#fbd4d4}
+  .danger b{color:var(--red)}
+  .add-row{display:grid;grid-template-columns:1.3fr 1.1fr 1fr .9fr auto;gap:8px;margin-bottom:14px}
+  @media(max-width:760px){.add-row{grid-template-columns:1fr 1fr}}
+  input,select{padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;width:100%;font-family:inherit}
+  input:focus,select:focus{outline:none;border-color:var(--accent)}
+  button{padding:10px 18px;background:linear-gradient(135deg,var(--accent),var(--violet));border:none;border-radius:8px;color:#04121a;font-weight:700;cursor:pointer;font-size:.9rem}
+  button:hover{opacity:.9}
+  table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.88rem}
+  th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+  .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:600}
+  .b-granted{background:rgba(52,211,153,.15);color:var(--green)}
+  .b-pending{background:rgba(251,191,36,.15);color:var(--amber)}
+  .b-revoked{background:rgba(248,113,113,.15);color:var(--red)}
+  .del{background:none;color:var(--muted);border:none;cursor:pointer;font-size:1.1rem;padding:2px 8px}
+  .del:hover{color:var(--red)}
+  .empty{color:var(--muted);text-align:center;padding:40px;font-style:italic}
+  .note{color:var(--muted);font-size:.8rem;margin-top:20px}
+  .guide{margin-top:38px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 24px}
+  .guide h2{font-size:1.15rem;margin-bottom:4px}
+  .guide .gsub{color:var(--muted);font-size:.84rem;margin-bottom:18px}
+  .guide ol{margin:0;padding-left:0;list-style:none;counter-reset:step}
+  .guide li{position:relative;padding:12px 0 12px 44px;border-bottom:1px solid var(--border);counter-increment:step;font-size:.9rem}
+  .guide li:last-child{border-bottom:none}
+  .guide li::before{content:counter(step);position:absolute;left:0;top:11px;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--violet));color:#04121a;font-weight:700;font-size:.82rem;display:flex;align-items:center;justify-content:center}
+  .guide li b{color:var(--accent)}
+  .guide .say{display:block;margin-top:5px;color:var(--muted);font-style:italic;font-size:.85rem}
+  .guide .why{margin-top:16px;font-size:.82rem;color:#bff3df;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:12px 14px}
+</style>
+</head>
+<body>
+  <h1>🔐 Client Access Tracker</h1>
+  <div class="sub">Track which clients have granted you Business Manager access — the professional, secure way.</div>
+
+  <div class="safe">✅ <b>The right way:</b> Clients grant your <b>Meta Business Manager</b> access to their ad account. You log in with <b>your own</b> account — never theirs. You get the "keys to drive," never the wallet.</div>
+
+  <div class="danger">🚫 <b>Never store here (or anywhere):</b> client Facebook <b>passwords</b> or <b>credit card numbers</b>. You never need them, and holding them is a security + liability risk that breaks your whole trust promise. Facebook hides card numbers from you by design.</div>
+
+  <div class="add-row">
+    <input id="name" placeholder="Client / business name"/>
+    <input id="adacct" placeholder="Ad Account ID (e.g. 1571984...)"/>
+    <input id="page" placeholder="Facebook Page name"/>
+    <select id="status">
+      <option value="pending">Pending</option>
+      <option value="granted">Access Granted</option>
+      <option value="revoked">Revoked</option>
+    </select>
+    <button onclick="addRow()">Add</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Client</th><th>Ad Account ID</th><th>FB Page</th><th>Access Status</th><th></th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="empty" class="empty">No clients tracked yet. Add one above.</div>
+
+  <div class="note">Saved locally in your browser (localStorage). Card numbers and passwords are intentionally not fields here.</div>
+
+  <div class="guide">
+    <h2>📋 Onboarding: get access the right way</h2>
+    <div class="gsub">Read this off on the call. You never ask for a password — the client grants your Business Manager access to their ad account. Takes ~5 minutes together.</div>
+    <ol>
+      <li><b>You:</b> have your own <b>Meta Business Manager</b> ready (business.facebook.com). Set this up once, use it for every client.
+        <span class="say">"I'll never need your password — you just add my business as a partner. You stay in full control."</span></li>
+      <li><b>Client:</b> makes sure they have a <b>Facebook business Page</b> and an <b>ad account</b>. If not, create them together now (free, ~10 min).</li>
+      <li><b>Client:</b> goes to their <b>Business Settings → Partners</b> (or "Ad Accounts → Assign Partner"), clicks <b>Add / Assign Partner</b>.</li>
+      <li><b>You:</b> give them your <b>Business Manager ID</b> (a number in your Business Settings → Business Info). They paste it in.</li>
+      <li><b>Client:</b> selects the <b>ad account</b> (and Page, if you'll manage posts too) and grants your role — <b>Manage campaigns / Advertiser</b> access.</li>
+      <li><b>Client:</b> confirms <b>their credit card</b> is on the ad account's Payment Settings. This funds the ads — paid straight to Facebook, never through you.</li>
+      <li><b>You:</b> accept the partner request in your Business Manager. Their ad account now appears in <b>your</b> dashboard — ready to build campaigns.</li>
+      <li><b>Record it above:</b> add the client, their Ad Account ID, and set status to <b>Access Granted</b>.</li>
+    </ol>
+    <div class="why">🔑 <b>Keys, not the wallet:</b> you log in with YOUR account and manage theirs through permission — you never see their password or card number, and they can revoke you in one click. That's the whole trust promise, made real.</div>
+  </div>
+
+  <div class="guide">
+    <h2>📲 Send-to-client: “How to add me as a partner”</h2>
+    <div class="gsub">Copy/paste this to the client, or read it while screen-sharing. These are the steps <b>they</b> click on <b>their</b> end. (Meta moves menus around occasionally — wording may differ slightly, but the path is the same.)</div>
+    <ol>
+      <li>Go to <b>business.facebook.com</b> and log in. If you don't have a Business Manager yet, click <b>Create Account</b> and follow the prompts (name = your business, ~2 min).</li>
+      <li>Click the <b>gear icon ⚙️ (Business Settings)</b> in the bottom-left.</li>
+      <li>In the left menu, open <b>Users → Partners</b>.</li>
+      <li>Click the blue <b>Add</b> button, then choose <b>“Give a partner access to your assets.”</b></li>
+      <li>Enter <b>my Business Manager ID:</b> <span style="color:var(--accent);font-weight:700">1055861570245020</span> and click <b>Next</b>.</li>
+      <li>On the left, pick <b>Ad Accounts</b>, select your ad account, and toggle on <b>“Manage campaigns”</b> (and <b>Pages → your Page → Manage</b> if I'll handle posts too).</li>
+      <li>Click <b>Save Changes</b>. That's it — I'll get the request on my side and accept it.</li>
+    </ol>
+    <div class="why">💡 <b>Before step 6 works, you need an ad account.</b> If you don't have one: Business Settings → <b>Accounts → Ad Accounts → Add → Create a new ad account</b>, then add <b>your own card</b> under its Payment Settings. That card pays Facebook directly — it never goes through me.</div>
+  </div>
+
+<script>
+  const KEY='stratford_client_access';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||[] }catch(e){ return [] } }
+  function save(d){ localStorage.setItem(KEY, JSON.stringify(d)); }
+  function badge(s){
+    const map={granted:['b-granted','Access Granted'],pending:['b-pending','Pending'],revoked:['b-revoked','Revoked']};
+    const m=map[s]||map.pending; return `<span class="badge ${m[0]}">${m[1]}</span>`;
+  }
+  function render(){
+    const d=load(); const tb=document.getElementById('rows'); tb.innerHTML='';
+    document.getElementById('empty').style.display = d.length? 'none':'block';
+    d.forEach((r,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${esc(r.name)}</td><td>${esc(r.adacct||'—')}</td><td>${esc(r.page||'—')}</td><td>${badge(r.status)}</td><td><button class="del" onclick="del(${i})">✕</button></td>`;
+      tb.appendChild(tr);
+    });
+  }
+  function esc(s){ return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+  function addRow(){
+    const name=document.getElementById('name').value.trim();
+    if(!name){ alert('Enter a client name'); return; }
+    const d=load();
+    d.push({name, adacct:document.getElementById('adacct').value.trim(), page:document.getElementById('page').value.trim(), status:document.getElementById('status').value});
+    save(d);
+    document.getElementById('name').value=''; document.getElementById('adacct').value=''; document.getElementById('page').value='';
+    render();
+  }
+  function del(i){ const d=load(); d.splice(i,1); save(d); render(); }
+  render();
+</script>
+</body>
+</html>
