@@ -10,22 +10,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f7f3ec;          /* ivory */
-    --bg-2:#fbf8f2;        /* lighter panel */
-    --bg-3:#efe8dc;        /* soft sand */
-    --ink:#2a2622;         /* warm charcoal */
-    --ink-soft:#6b6459;    /* muted taupe */
-    --champagne:#b9975b;   /* champagne gold */
-    --champ-soft:#cdb489;
-    --line:rgba(185,151,91,.30);
-    --line-soft:rgba(42,38,34,.10);
+    --bg:#1a1712;          /* warm near-black */
+    --bg-2:#221e18;        /* raised panel */
+    --bg-3:#2a251d;        /* soft sand-dark */
+    --ink:#f3ece0;         /* warm ivory text */
+    --ink-soft:#c4baa6;    /* muted warm taupe (lifted for readability) */
+    --champagne:#cdb489;   /* champagne gold (lifted for contrast) */
+    --champ-soft:#e0cba0;
+    --line:rgba(205,180,137,.32);
+    --line-soft:rgba(243,236,224,.12);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
+  html,body{max-width:100%;overflow-x:hidden}
+  img{max-width:100%;height:auto}
   body{
     margin:0;background:var(--bg);color:var(--ink);
     font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;
     -webkit-font-smoothing:antialiased;letter-spacing:.01em;
+    overflow-wrap:break-word;
   }
   h1,h2,h3{font-weight:400;letter-spacing:.01em}
   .script{font-family:'Playfair Display',serif;font-style:italic;font-weight:400}
@@ -37,7 +40,7 @@
   /* NAV */
   nav.topbar{position:fixed;top:0;left:0;right:0;z-index:80;
     display:flex;align-items:center;justify-content:space-between;
-    padding:20px 34px;background:rgba(247,243,236,.85);backdrop-filter:blur(10px);
+    padding:20px 34px;background:rgba(26,23,18,.85);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft)}
   .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
   .brand img{width:38px;height:38px;border-radius:3px;object-fit:cover;display:block;border:1px solid var(--line)}
@@ -130,6 +133,21 @@
   .price-card li .ck{color:var(--champagne);flex:0 0 auto;font-size:.65rem;margin-top:5px}
   .price-card li:last-child{border-bottom:none}
   .price-card .fine{font-size:.8rem;color:var(--ink-soft);margin-top:22px;font-weight:300}
+  /* 3-TIER PRICING GRID */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+  .tier{background:var(--bg-2);border:1px solid var(--line-soft);padding:44px 30px;text-align:center;display:flex;flex-direction:column}
+  .tier.featured{border:1px solid var(--champagne);position:relative}
+  .tier .free-badge{display:inline-block;padding:8px 20px;font-size:.64rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--champagne);border:1px solid var(--line);margin-bottom:18px}
+  .tier-name{font-family:'Italiana',serif;font-size:1.15rem;letter-spacing:.16em;text-transform:uppercase;color:var(--champagne);margin-bottom:14px}
+  .tier .amt{font-family:'Italiana',serif;font-size:3rem;font-weight:400;line-height:1}
+  .tier .amt span{font-size:.9rem;color:var(--ink-soft);font-weight:300;font-family:'Jost';letter-spacing:.02em}
+  .tier .tier-for{color:var(--ink-soft);margin:14px 0 0;font-weight:300;font-size:.9rem;min-height:2.6em}
+  .tier .divider{width:44px;height:1px;background:var(--line);margin:28px auto}
+  .tier ul{list-style:none;padding:0;margin:0 0 30px;text-align:left;flex:1}
+  .tier li{padding:11px 0;color:var(--ink);display:flex;gap:13px;align-items:flex-start;font-size:.92rem;font-weight:300;border-bottom:1px solid var(--line-soft)}
+  .tier li .ck{color:var(--champagne);flex:0 0 auto;font-size:.6rem;margin-top:5px}
+  .tier li:last-child{border-bottom:none}
+  @media(max-width:820px){.price-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto}}
 
   /* FAQ */
   .faq{max-width:820px;margin:0 auto}
@@ -209,7 +227,7 @@
     <h1>Ad spend, turned into <span class="script">real customers</span></h1>
     <p class="sub">Stratford Advertisements designs and manages your Facebook &amp; Instagram campaigns end to end — so you gain leads and sales without touching a single setting. You retain full control of your capital. We provide the strategy.</p>
     <div class="hero-cta">
-      <a href="#contact" class="btn btn-primary">Begin your 14-day trial</a>
+      <a href="https://buy.stripe.com/5kQ4gs3nt7Xy7FBfkt0ZW01" class="btn btn-primary">Begin your 14-day trial</a>
       <a href="#how" class="btn btn-outline">Our process</a>
     </div>
     <div class="divider"></div>
@@ -313,24 +331,58 @@
     <div class="sec-head">
       <div class="tag">Pricing</div>
       <h2>Simple, flat, <span class="script">honest</span></h2>
-      <p>One flat monthly management fee. No percentage of your ad spend, no surprise charges, no long contracts.</p>
+      <p>A flat monthly management fee sized to your business. No percentage of your ad spend, no surprise charges, no long contracts — and 14 days free to start.</p>
     </div>
-    <div class="price-card">
-      <div class="free-badge">14 Days Free — No Lock-In</div>
-      <div class="amt">$1,500<span>&nbsp;/ month</span></div>
-      <p class="sub-note">Flat management fee. Your ad budget is separate and paid directly to Facebook.</p>
-      <div class="divider"></div>
-      <ul>
-        <li><span class="ck">◆</span> Full campaign strategy, setup &amp; management</li>
-        <li><span class="ck">◆</span> Ad creative &amp; copywriting included</li>
-        <li><span class="ck">◆</span> Daily monitoring &amp; optimization</li>
-        <li><span class="ck">◆</span> Monthly performance reports</li>
-        <li><span class="ck">◆</span> Direct access — reach us anytime</li>
-        <li><span class="ck">◆</span> Cancel anytime, no contracts</li>
-      </ul>
-      <a href="#contact" class="btn btn-primary" style="width:100%">Begin your 14-day trial</a>
-      <p class="fine">Secure recurring billing handled by Stripe. Your ad budget never passes through us.</p>
+    <div class="price-grid">
+
+      <div class="tier">
+        <div class="tier-name">Essential</div>
+        <div class="amt">$1,500<span>&nbsp;/ mo</span></div>
+        <p class="tier-for">For individual agents &amp; small teams</p>
+        <div class="divider"></div>
+        <ul>
+          <li><span class="ck">◆</span> One core campaign, fully managed</li>
+          <li><span class="ck">◆</span> Ad creative &amp; copywriting included</li>
+          <li><span class="ck">◆</span> Daily monitoring &amp; optimization</li>
+          <li><span class="ck">◆</span> Monthly performance reports</li>
+          <li><span class="ck">◆</span> Cancel anytime, no contracts</li>
+        </ul>
+        <a href="https://buy.stripe.com/5kQ4gs3nt7Xy7FBfkt0ZW01" class="btn btn-outline" style="width:100%">Start free trial</a>
+      </div>
+
+      <div class="tier featured">
+        <div class="free-badge">Most Popular</div>
+        <div class="tier-name">Growth</div>
+        <div class="amt">$2,000<span>&nbsp;/ mo</span></div>
+        <p class="tier-for">For established agents &amp; teams scaling up</p>
+        <div class="divider"></div>
+        <ul>
+          <li><span class="ck">◆</span> Multiple campaigns &amp; audiences</li>
+          <li><span class="ck">◆</span> Ongoing creative &amp; A/B testing</li>
+          <li><span class="ck">◆</span> Biweekly optimization &amp; reporting</li>
+          <li><span class="ck">◆</span> Landing page &amp; lead tracking setup</li>
+          <li><span class="ck">◆</span> Direct access — reach us anytime</li>
+        </ul>
+        <a href="https://buy.stripe.com/5kQ4gs3nt7Xy7FBfkt0ZW01" class="btn btn-primary" style="width:100%">Begin your 14-day trial</a>
+      </div>
+
+      <div class="tier">
+        <div class="tier-name">Developer</div>
+        <div class="amt">$3,500<span>&nbsp;/ mo</span></div>
+        <p class="tier-for">For developers, luxury &amp; multi-property clients</p>
+        <div class="divider"></div>
+        <ul>
+          <li><span class="ck">◆</span> Full multi-campaign management</li>
+          <li><span class="ck">◆</span> Premium creative &amp; strategy</li>
+          <li><span class="ck">◆</span> Weekly optimization &amp; reporting</li>
+          <li><span class="ck">◆</span> Dedicated landing pages per project</li>
+          <li><span class="ck">◆</span> Priority support &amp; strategy calls</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="width:100%">Talk to us</a>
+      </div>
+
     </div>
+    <p class="fine" style="text-align:center;max-width:640px;margin:34px auto 0">14 days free on every plan — no lock-in. Your ad budget is always separate and paid directly to Facebook; it never passes through us. Secure recurring billing handled by Stripe.</p>
   </section>
 
   <!-- FAQ -->
@@ -344,6 +396,9 @@
       <details><summary>What is the free trial?</summary><p>You receive 14 days of management entirely free, with no lock-in. It is our way of proving value before you commit to anything — enough time to move your campaign past Facebook's learning phase and see real activity. If it is not a fit, you walk away — no contract, no fee.</p></details>
       <details><summary>How much should I budget for ads?</summary><p>That depends on your goals and industry — we recommend a starting budget on your discovery call. Many businesses begin in the $1,000–$3,000 per month range for ad spend, and we help you scale as results prove out.</p></details>
       <details><summary>How soon will I see results?</summary><p>Facebook's algorithm requires a short learning period — usually the first week or two — to optimize. Most clients begin seeing meaningful leads or sales within the first few weeks, with performance improving as we refine.</p></details>
+      <details><summary>What if I don't have Facebook set up yet?</summary><p>Not a problem at all. Setting up your Facebook business Page and ad account is part of onboarding — we do it together on our first call, it is quick and free, and you own all of it. The only piece that has to be you is adding your own card to the ad account, since that budget is paid directly to Facebook.</p></details>
+      <details><summary>Do you need my password or my card details?</summary><p>No — and that is by design. We never ask for your Facebook password or your card number. You simply grant our business account permission to manage your ad account, and you can revoke that access in one click at any time. Your login and payment details stay entirely yours.</p></details>
+      <details><summary>Why not just run the ads myself?</summary><p>You could — Facebook does not charge for access. Our fee is for the expertise that turns that ad budget into actual customers instead of wasted spend. Most self-run campaigns lose money to poor targeting, weak creative, and no tracking. Think of it like an accountant: you could file your own taxes, but the professional pays for themselves.</p></details>
       <details><summary>Do I need my own website?</summary><p>Ideally, yes — it gives your ads a destination and allows us to track conversions. If you do not have one, we can direct ads to a landing page or your social profile, and help you plan a proper destination.</p></details>
       <details><summary>Can I cancel anytime?</summary><p>Yes. No long-term contracts, ever. Cancel whenever you wish — though we are confident you will not want to once results begin to arrive.</p></details>
     </div>
