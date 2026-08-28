@@ -136,6 +136,10 @@
   /* 3-TIER PRICING GRID */
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
   .price-grid.two{grid-template-columns:repeat(2,1fr);max-width:760px;margin:0 auto}
+  .spend-note{max-width:600px;margin:0 auto 26px;text-align:center;font-size:.9rem;line-height:1.6;
+    color:var(--ink-soft);font-weight:300;padding:12px 20px;border:1px solid var(--line);
+    border-radius:10px;background:rgba(166,124,52,.04)}
+  .spend-note strong{color:var(--ink);font-weight:600}
   .tier{background:var(--bg-2);border:1px solid var(--line-soft);padding:44px 30px;text-align:center;display:flex;flex-direction:column}
   .tier.featured{border:1px solid var(--champagne);position:relative}
   .tier .free-badge{display:inline-block;padding:8px 20px;font-size:.64rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--champagne);border:1px solid var(--line);margin-bottom:18px}
@@ -334,6 +338,7 @@
       <h2>Simple, flat, <span class="script">honest</span></h2>
       <p>A flat monthly management fee sized to your business. No percentage of your ad spend, no surprise charges, no long contracts — and 14 days free to start.</p>
     </div>
+    <p class="spend-note">Most clients set aside roughly <strong>$1,000–$3,000/month for ad spend</strong> — paid directly to Meta from your own account, never to us. Your management fee below is entirely separate.</p>
     <div class="price-grid two">
 
       <div class="tier featured">
