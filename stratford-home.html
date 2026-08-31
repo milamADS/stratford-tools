@@ -10,16 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#1a1712;          /* warm near-black */
-    --bg-2:#221e18;        /* raised panel */
-    --bg-3:#2a251d;        /* soft sand-dark */
-    --ink:#f7f2ea;         /* warm ivory text (brighter for readability) */
-    --ink-soft:#d3cbbd;    /* muted warm taupe (lifted higher for contrast) */
-    --champagne:#c9b58f;   /* softened champagne — warm metallic, less yellow */
-    --champ-soft:#ddccae;
-    --label-gold:#d9c6a2;  /* brighter gold for tiny letter-spaced uppercase labels */
-    --line:rgba(201,181,143,.28);
-    --line-soft:rgba(247,242,234,.13);
+    --bg:#ffffff;          /* clean white */
+    --bg-2:#faf8f4;        /* raised panel — faint warm ivory */
+    --bg-3:#f3efe8;        /* soft sand-light */
+    --ink:#211d17;         /* near-black warm ink (strong contrast on white) */
+    --ink-soft:#514a3f;    /* muted warm taupe for body copy on light (darkened for AA) */
+    --champagne:#a8873f;   /* deeper champagne — reads on white, not washed out */
+    --champ-soft:#c0a45f;
+    --label-gold:#7d6220;  /* deep gold for tiny uppercase labels on white */
+    --line:rgba(168,135,63,.32);
+    --line-soft:rgba(33,29,23,.12);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -41,12 +41,12 @@
   /* NAV */
   nav.topbar{position:fixed;top:0;left:0;right:0;z-index:80;
     display:flex;align-items:center;justify-content:space-between;
-    padding:20px 34px;background:rgba(26,23,18,.85);backdrop-filter:blur(10px);
+    padding:20px 34px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft)}
   .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink)}
   .brand img{width:38px;height:38px;border-radius:3px;object-fit:cover;display:block;border:1px solid var(--line)}
   .brand .name{font-family:'Italiana',serif;font-size:1.4rem;letter-spacing:.14em}
-  .brand .name small{display:block;font-family:'Jost';font-weight:300;font-size:.5rem;
+  .brand .name small{display:block;font-family:'Jost';font-weight:400;font-size:.5rem;
     letter-spacing:.44em;color:var(--champagne);text-transform:uppercase;margin-top:1px}
   .navlinks{display:flex;gap:38px;align-items:center}
   .navlinks a{color:var(--ink-soft);text-decoration:none;font-size:.76rem;font-weight:400;
@@ -108,7 +108,7 @@
   .flow-node{padding:22px 28px;border:1px solid var(--line-soft);text-align:center;min-width:155px;background:var(--bg)}
   .flow-node .big{font-family:'Italiana',serif;font-size:1.35rem;margin-bottom:6px}
   .flow-node .sm{font-size:.74rem;color:var(--ink-soft);letter-spacing:.05em;font-weight:400}
-  .flow-arrow{font-size:1.1rem;color:var(--champagne)}
+  .flow-arrow{font-size:1.4rem;color:var(--champagne);font-weight:500}
   .flow-node.us{border-color:var(--line)}
   .flow-caption{color:var(--ink-soft);margin-top:28px;font-size:.9rem;font-weight:300;font-style:italic;font-family:'Playfair Display',serif}
 
@@ -139,7 +139,7 @@
   .price-grid.two{grid-template-columns:repeat(2,1fr);max-width:760px;margin:0 auto}
   .spend-note{max-width:600px;margin:0 auto 26px;text-align:center;font-size:.9rem;line-height:1.6;
     color:var(--ink-soft);font-weight:300;padding:12px 20px;border:1px solid var(--line);
-    border-radius:10px;background:rgba(166,124,52,.04)}
+    border-radius:10px;background:rgba(168,135,63,.06)}
   .spend-note strong{color:var(--ink);font-weight:600}
   .tier{background:var(--bg-2);border:1px solid var(--line-soft);padding:44px 30px;text-align:center;display:flex;flex-direction:column}
   .tier.featured{border:1px solid var(--champagne);position:relative}
