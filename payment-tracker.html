@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratford — Client Payment Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#faf8f4; --ink:#211d17; --ink-soft:#514a3f;
+    --gold:#a8873f; --gold-deep:#7d6220; --line:rgba(33,29,23,.12);
+    --green:#2e7d4f; --green-bg:#eaf6ef;
+    --amber:#b8860b; --amber-bg:#fdf6e3;
+    --red:#c0392b; --red-bg:#fdecea;
+    --grey:#7a736a; --grey-bg:#f2efe9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Jost',sans-serif;font-weight:400;line-height:1.6;padding:0 0 80px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header{background:var(--bg-2);border-bottom:1px solid var(--line);padding:34px 0;margin-bottom:34px}
+  header .brand{font-family:'Italiana',serif;font-size:1.9rem;letter-spacing:.08em}
+  header .brand small{display:block;font-size:.6rem;letter-spacing:.4em;color:var(--gold-deep);text-transform:uppercase;font-weight:500;margin-top:2px}
+  header .sub{color:var(--ink-soft);font-size:.95rem;margin-top:8px}
+  h1{font-family:'Italiana',serif;font-weight:400;font-size:1.5rem;margin:0}
+
+  /* SUMMARY STRIP */
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+  .stat{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:18px 20px;text-align:center}
+  .stat .num{font-family:'Jost',sans-serif;font-weight:600;font-variant-numeric:tabular-nums;font-size:2rem;line-height:1}
+  .stat .lbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+  .stat.good .num{color:var(--green)} .stat.warn .num{color:var(--amber)} .stat.bad .num{color:var(--red)}
+  .stat.mrr .num{color:var(--gold-deep)}
+  @media(max-width:680px){.summary{grid-template-columns:repeat(2,1fr)}}
+
+  /* ALERT BANNER */
+  .alert{border-radius:10px;padding:16px 20px;margin-bottom:26px;font-size:.95rem;display:none}
+  .alert.show{display:block}
+  .alert.red{background:var(--red-bg);border:1px solid var(--red);color:var(--red)}
+  .alert.amber{background:var(--amber-bg);border:1px solid var(--amber);color:#8a6508}
+  .alert strong{font-weight:600}
+
+  /* ADD FORM */
+  .card{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:24px;margin-bottom:30px}
+  .card h2{font-family:'Italiana',serif;font-weight:400;font-size:1.2rem;margin:0 0 18px}
+  .form-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:12px;align-items:end}
+  @media(max-width:820px){.form-grid{grid-template-columns:1fr 1fr}}
+  label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;font-weight:500}
+  input,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font-family:'Jost';font-size:.95rem;background:#fff;color:var(--ink)}
+  input:focus,select:focus{outline:none;border-color:var(--gold)}
+  .btn{padding:11px 22px;border:none;border-radius:8px;background:var(--ink);color:#fff;font-family:'Jost';font-weight:500;font-size:.9rem;letter-spacing:.04em;cursor:pointer;transition:.2s;white-space:nowrap}
+  .btn:hover{background:var(--gold-deep)}
+  .btn-sm{padding:6px 12px;font-size:.78rem}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+  .btn-ghost:hover{background:var(--grey-bg);color:var(--ink)}
+
+  /* TABLE */
+  table{width:100%;border-collapse:collapse;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th{text-align:left;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;padding:14px 16px;border-bottom:1px solid var(--line);background:#f4f0e8}
+  td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:.94rem;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .cname{font-weight:600}
+  .ctier{font-size:.75rem;color:var(--gold-deep);letter-spacing:.06em;text-transform:uppercase}
+  .pill{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:.04em}
+  .pill.paid{background:var(--green-bg);color:var(--green)}
+  .pill.due{background:var(--amber-bg);color:var(--amber)}
+  .pill.late{background:var(--red-bg);color:var(--red)}
+  .pill.new{background:var(--grey-bg);color:var(--grey)}
+  .daysbad{color:var(--red);font-weight:600}
+  .empty{text-align:center;padding:26px 20px;color:var(--ink-soft)}
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .flag{font-size:.8rem;margin-left:6px}
+
+  /* firing button area for late clients */
+  .fire-note{margin-top:6px;font-size:.8rem;color:var(--red)}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+  .toolbar h2{margin:0;font-family:'Italiana',serif;font-weight:400;font-size:1.3rem}
+  .muted{color:var(--ink-soft);font-size:.85rem}
+  footer{text-align:center;color:var(--ink-soft);font-size:.8rem;margin-top:40px}
+  @media(max-width:680px){
+    table,thead,tbody,th,td,tr{display:block}
+    thead{display:none}
+    tr{border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:8px;background:var(--bg-2)}
+    td{border:none;padding:8px 10px;display:flex;justify-content:space-between;align-items:center}
+    td::before{content:attr(data-l);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">Stratford<small>Advertisements</small></div>
+    <div class="sub">Client Payment Tracker — who's paying on time, who's not.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- SUMMARY -->
+  <div class="summary" id="summary"></div>
+
+  <!-- ALERTS -->
+  <div class="alert red" id="alertLate"></div>
+  <div class="alert amber" id="alertDue"></div>
+
+  <!-- ADD CLIENT -->
+  <div class="card">
+    <h2>Add / update a client</h2>
+    <div class="form-grid">
+      <div><label>Client name</label><input id="fName" placeholder="e.g. David Siddons Group"></div>
+      <div><label>Tier / fee</label>
+        <select id="fTier">
+          <option value="2000">Growth — $2,000</option>
+          <option value="3000">Bespoke — $3,000</option>
+          <option value="1500">Legacy — $1,500</option>
+          <option value="0">Custom / other</option>
+        </select>
+      </div>
+      <div><label>Billing day (1–28)</label><input id="fDay" type="number" min="1" max="28" placeholder="e.g. 10"></div>
+      <div><label>Status</label>
+        <select id="fStatus">
+          <option value="new">New / trial</option>
+          <option value="paid">Paid this cycle</option>
+          <option value="due">Due</option>
+        </select>
+      </div>
+      <div><button class="btn" onclick="addClient()">Save client</button></div>
+    </div>
+    <p class="muted" style="margin:14px 0 0">Tip: set the billing day to the day of the month their $ is charged. The tracker auto-flags anyone past due. Data saves in this browser only (private).</p>
+  </div>
+
+  <!-- TABLE -->
+  <div class="toolbar">
+    <h2>Clients</h2>
+    <div>
+      <button class="btn btn-ghost btn-sm" onclick="exportData()">Export</button>
+      <button class="btn btn-ghost btn-sm" onclick="importData()">Import</button>
+    </div>
+  </div>
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th>Client</th><th>Fee</th><th>Billing day</th><th>Status</th><th>Days late</th><th>Reliability</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <footer>Stratford Advertisements · Payment Tracker · Data stored locally in your browser. Export regularly to back up.</footer>
+</div>
+
+<script>
+const KEY = 'stratford_payments_v1';
+let clients = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(clients)); render(); }
+
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+
+// Compute days late: how many days past their billing day, if still unpaid this cycle
+function daysLate(c){
+  if(c.status === 'paid' || c.status === 'new') return 0;
+  const now = new Date();
+  const day = Math.min(Math.max(parseInt(c.billingDay)||1,1),28);
+  // this month's due date
+  let due = new Date(now.getFullYear(), now.getMonth(), day);
+  if(now < due){ // due date this month hasn't hit yet — check last month
+    due = new Date(now.getFullYear(), now.getMonth()-1, day);
+  }
+  const diff = Math.floor((now - due)/(1000*60*60*24));
+  return diff > 0 ? diff : 0;
+}
+
+// reliability = onTime / totalCycles
+function reliability(c){
+  const total = (c.onTime||0) + (c.late||0);
+  if(total === 0) return '—';
+  return Math.round((c.onTime/total)*100) + '%';
+}
+
+function addClient(){
+  const name = document.getElementById('fName').value.trim();
+  if(!name){ alert('Enter a client name.'); return; }
+  const tier = document.getElementById('fTier').value;
+  const day = document.getElementById('fDay').value || 1;
+  const status = document.getElementById('fStatus').value;
+  // update if exists
+  let c = clients.find(x => x.name.toLowerCase() === name.toLowerCase());
+  if(!c){ c = {name, onTime:0, late:0, history:[]}; clients.push(c); }
+  c.fee = parseInt(tier);
+  c.billingDay = parseInt(day);
+  c.status = status;
+  document.getElementById('fName').value='';
+  document.getElementById('fDay').value='';
+  save();
+}
+
+function markPaid(i){
+  const c = clients[i];
+  const wasLate = daysLate(c) > 0;
+  if(wasLate){ c.late = (c.late||0)+1; } else { c.onTime = (c.onTime||0)+1; }
+  c.history = c.history||[];
+  c.history.push({date:todayISO(), late:wasLate});
+  c.status = 'paid';
+  c.lastPaid = todayISO();
+  save();
+}
+
+function markDue(i){ clients[i].status='due'; save(); }
+function removeClient(i){ if(confirm('Remove '+clients[i].name+'?')){ clients.splice(i,1); save(); } }
+
+function render(){
+  const rows = document.getElementById('rows');
+  rows.innerHTML = '';
+  let mrr=0, paidCount=0, dueCount=0, lateCount=0;
+  const lateNames=[], dueNames=[];
+
+  clients.sort((a,b)=> daysLate(b)-daysLate(a));
+
+  clients.forEach((c,i)=>{
+    const dl = daysLate(c);
+    let statusClass, statusLabel;
+    if(c.status==='paid'){ statusClass='paid'; statusLabel='Paid'; paidCount++; mrr+=(c.fee||0); }
+    else if(c.status==='new'){ statusClass='new'; statusLabel='Trial'; }
+    else if(dl>0){ statusClass='late'; statusLabel='LATE'; lateCount++; lateNames.push(c.name+' ('+dl+'d)'); }
+    else { statusClass='due'; statusLabel='Due'; dueCount++; dueNames.push(c.name); }
+
+    const rel = reliability(c);
+    const relBad = (rel!=='—' && parseInt(rel) < 70);
+    const feeStr = c.fee ? '$'+c.fee.toLocaleString() : '—';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td data-l="Client"><span class="cname">${c.name}</span></td>
+      <td data-l="Fee">${feeStr}<span class="ctier"></span></td>
+      <td data-l="Billing day">${c.billingDay||'—'}</td>
+      <td data-l="Status"><span class="pill ${statusClass}">${statusLabel}</span></td>
+      <td data-l="Days late">${dl>0?'<span class="daysbad">'+dl+' days</span>':'—'}</td>
+      <td data-l="Reliability">${rel}${relBad?'<span class="flag" title="Unreliable payer">⚠️</span>':''}</td>
+      <td data-l="Actions"><div class="row-actions">
+        <button class="btn btn-sm" onclick="markPaid(${i})">Mark paid</button>
+        <button class="btn btn-sm btn-ghost" onclick="markDue(${i})">Due</button>
+        <button class="btn btn-sm btn-ghost" onclick="removeClient(${i})">✕</button>
+      </div>${dl>=5?'<div class="fire-note">⚠️ '+dl+' days late — consider pausing their ads until paid.</div>':''}</td>
+    `;
+    rows.appendChild(tr);
+  });
+
+  if(clients.length===0){
+    rows.innerHTML = '<tr><td colspan="7" class="empty">No clients yet. Add your first one above.</td></tr>';
+  }
+
+  // summary
+  document.getElementById('summary').innerHTML = `
+    <div class="stat mrr"><div class="num">$${mrr.toLocaleString()}</div><div class="lbl">Monthly Revenue</div></div>
+    <div class="stat good"><div class="num">${paidCount}</div><div class="lbl">Paid this cycle</div></div>
+    <div class="stat warn"><div class="num">${dueCount}</div><div class="lbl">Due soon</div></div>
+    <div class="stat bad"><div class="num">${lateCount}</div><div class="lbl">Late / overdue</div></div>
+  `;
+
+  // alerts
+  const al = document.getElementById('alertLate');
+  const ad = document.getElementById('alertDue');
+  if(lateNames.length){ al.classList.add('show'); al.innerHTML = `<strong>🚨 ${lateNames.length} client(s) LATE:</strong> ${lateNames.join(', ')}. These clients owe you money. If they're chronically unreliable, pause their ads until they pay — you don't work for free.`; }
+  else { al.classList.remove('show'); }
+  if(dueNames.length){ ad.classList.add('show'); ad.innerHTML = `<strong>⏰ Due soon:</strong> ${dueNames.join(', ')}. Keep an eye out for these payments.`; }
+  else { ad.classList.remove('show'); }
+}
+
+function exportData(){
+  const blob = new Blob([JSON.stringify(clients,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'stratford-payments-'+todayISO()+'.json';
+  a.click();
+}
+function importData(){
+  const inp = document.createElement('input');
+  inp.type='file'; inp.accept='.json';
+  inp.onchange = e => {
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = () => { try{ clients = JSON.parse(r.result); save(); alert('Imported.'); }catch(err){ alert('Bad file.'); } };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+
+render();
+</script>
+</body>
+</html>
