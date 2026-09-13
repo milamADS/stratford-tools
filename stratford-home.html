@@ -10,18 +10,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#ffffff;          /* clean white */
-    --bg-2:#faf8f4;        /* raised panel — faint warm ivory */
-    --bg-3:#f3efe8;        /* soft sand-light */
-    --ink:#211d17;         /* near-black warm ink (strong contrast on white) */
-    --ink-soft:#514a3f;    /* muted warm taupe for body copy on light (darkened for AA) */
-    --champagne:#a8873f;   /* deeper champagne — reads on white, not washed out */
-    --champ-soft:#c0a45f;
-    --label-gold:#7d6220;  /* deep gold for tiny uppercase labels on white */
-    --line:rgba(168,135,63,.32);
-    --line-soft:rgba(33,29,23,.12);
-    --shadow-soft:0 18px 50px -28px rgba(33,29,23,.28);
-    --shadow-card:0 24px 60px -34px rgba(33,29,23,.34);
+    --bg:#fbfaf7;          /* marble white base */
+    --bg-2:#ffffff;        /* raised panel — pure white marble slab */
+    --bg-3:#f2efe8;        /* soft veined sand */
+    --ink:#1c1913;         /* near-black warm ink (strong contrast on marble) */
+    --ink-soft:#4c463b;    /* muted warm taupe for body copy */
+    --champagne:#c19434;   /* vibrant, richer gold — pops on marble */
+    --champ-soft:#e0be6a;
+    --champ-deep:#9a7420;  /* deep gold for solid accents */
+    --label-gold:#8a6a15;  /* deep gold for tiny uppercase labels */
+    --line:rgba(193,148,52,.42);
+    --line-soft:rgba(28,25,19,.11);
+    --shadow-soft:0 18px 50px -28px rgba(28,25,19,.22);
+    --shadow-card:0 26px 64px -34px rgba(28,25,19,.3);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -29,8 +30,13 @@
   img{max-width:100%;height:auto}
   body{
     margin:0;background:
-      radial-gradient(1100px 620px at 50% -8%, rgba(168,135,63,.07), transparent 60%),
-      linear-gradient(180deg,#ffffff 0%,#fdfbf7 100%);
+      radial-gradient(900px 500px at 12% 4%, rgba(193,148,52,.09), transparent 55%),
+      radial-gradient(1000px 560px at 88% 20%, rgba(193,148,52,.06), transparent 58%),
+      radial-gradient(700px 700px at 50% 100%, rgba(193,148,52,.05), transparent 60%),
+      /* marble veining */
+      repeating-linear-gradient(122deg, transparent 0 60px, rgba(28,25,19,.012) 60px 61px, transparent 61px 140px),
+      repeating-linear-gradient(58deg, transparent 0 90px, rgba(28,25,19,.010) 90px 91px, transparent 91px 200px),
+      linear-gradient(170deg,#ffffff 0%,#f9f7f2 42%,#f4f1ea 100%);
     background-attachment:fixed;color:var(--ink);
     font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;
     -webkit-font-smoothing:antialiased;letter-spacing:.01em;
