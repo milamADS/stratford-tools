@@ -197,11 +197,40 @@
   .calc .disclaim{text-align:center;margin:34px auto 0;font-size:.78rem;color:var(--ink-soft);font-weight:300;font-style:italic;font-family:'Playfair Display',serif;max-width:52ch}
   @media(max-width:760px){.calc{padding:40px 26px}.calc-grid{grid-template-columns:1fr;gap:36px}.calc-result{border-left:none;border-top:1px solid var(--line);padding-left:0;padding-top:36px}}
 
-  /* SCROLL REVEAL */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
-  .reveal.in{opacity:1;transform:none}
-  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
-  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+  /* SCROLL REVEAL — DISABLED (everything shows immediately, no scroll fade) */
+  .reveal{opacity:1;transform:none;transition:none}
+
+  /* WHY STRATFORD — COMPARISON */
+  .compare{max-width:920px;margin:0 auto;border:1px solid var(--line);background:var(--bg-2);box-shadow:var(--shadow-card);overflow:hidden}
+  .compare-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;align-items:stretch}
+  .compare-row + .compare-row{border-top:1px solid var(--line-soft)}
+  .compare-cell{padding:22px 20px;font-size:.94rem;font-weight:300;color:var(--ink-soft);display:flex;align-items:center;gap:10px;border-right:1px solid var(--line-soft)}
+  .compare-cell:last-child{border-right:none}
+  .compare-cell.rowlabel{color:var(--ink);font-weight:400;font-size:.98rem}
+  .compare-head .compare-cell{background:var(--bg-3);font-family:'Italiana',serif;font-size:1.05rem;letter-spacing:.04em;color:var(--ink);justify-content:center;text-align:center;padding:24px 16px}
+  .compare-head .compare-cell.us{color:var(--champagne);border-bottom:2px solid var(--champagne)}
+  .compare-cell.mark{justify-content:center;font-size:1.05rem}
+  .compare-cell.yes{color:#4d7c3a}
+  .compare-cell.no{color:#b0553f}
+  .compare-cell.us-col{background:rgba(168,135,63,.06)}
+  @media(max-width:760px){
+    .compare{overflow-x:auto}
+    .compare-row{grid-template-columns:1.3fr .8fr .8fr .8fr;min-width:560px}
+    .compare-cell{padding:16px 12px;font-size:.82rem}
+  }
+
+  /* GUARANTEE BAND */
+  .guarantee{max-width:880px;margin:0 auto;text-align:center;border:1px solid var(--champagne);
+    padding:56px 44px;background:linear-gradient(180deg,rgba(168,135,63,.05),rgba(168,135,63,.02));position:relative}
+  .guarantee .seal{width:70px;height:70px;margin:0 auto 26px;border:1px solid var(--champagne);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-family:'Italiana',serif;font-size:1.4rem;color:var(--champagne);
+    position:relative}
+  .guarantee .seal::before,.guarantee .seal::after{content:'';position:absolute;width:8px;height:8px;border:1px solid var(--champagne);border-radius:50%}
+  .guarantee .seal::before{top:-4px}.guarantee .seal::after{bottom:-4px}
+  .guarantee h2{font-family:'Italiana',serif;font-size:clamp(1.8rem,3.4vw,2.6rem);margin:0 0 18px;font-weight:400}
+  .guarantee h2 .script{font-family:'Playfair Display',serif;font-style:italic;color:var(--champagne)}
+  .guarantee p{color:var(--ink-soft);max-width:560px;margin:0 auto;font-size:1.06rem;font-weight:400;line-height:1.85}
+  .guarantee strong{color:var(--ink);font-weight:500}
 
   /* FAQ */
   .faq{max-width:820px;margin:0 auto}
@@ -380,6 +409,59 @@
     </div>
   </section>
 
+  <!-- WHY STRATFORD -->
+  <section id="why">
+    <div class="sec-head">
+      <div class="tag">Why Stratford</div>
+      <h2>The difference is <span class="script">where your money goes</span></h2>
+      <p>Three ways to run your advertising. Only one keeps you in full control of your capital.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-row compare-head">
+        <div class="compare-cell rowlabel"></div>
+        <div class="compare-cell">Do It Yourself</div>
+        <div class="compare-cell">Typical Agency</div>
+        <div class="compare-cell us">Stratford</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">You pay Facebook directly</div>
+        <div class="compare-cell mark yes">✓</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">Never hands over your ad budget</div>
+        <div class="compare-cell mark yes">✓</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">Expert targeting &amp; creative</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes">✓</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">Daily optimization &amp; tracking</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes">✓</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">No long-term contract</div>
+        <div class="compare-cell mark yes">✓</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell rowlabel">Free trial before you commit</div>
+        <div class="compare-cell mark no">—</div>
+        <div class="compare-cell mark no">✗</div>
+        <div class="compare-cell mark yes us-col">✓</div>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section id="pricing">
     <div class="sec-head reveal">
@@ -423,6 +505,16 @@
 
     </div>
     <p class="fine" style="text-align:center;max-width:640px;margin:34px auto 0">14 days free on every plan — no lock-in. Your ad budget is always separate and paid directly to Facebook; it never passes through us. Secure recurring billing handled by Stripe.</p>
+  </section>
+
+  <!-- GUARANTEE -->
+  <section id="guarantee">
+    <div class="guarantee">
+      <div class="seal">S</div>
+      <div class="tag" style="color:var(--label-gold);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase">Our Commitment</div>
+      <h2 style="margin-top:16px">Prove it first. <span class="script">Then decide.</span></h2>
+      <p>We earn your business before we ask for it. Your first <strong>14 days are entirely free</strong> — enough time to launch, move past Facebook's learning phase, and see real activity. No contract, no lock-in, and your ad budget always stays in your own account. If it isn't a fit, you simply walk away.</p>
+    </div>
   </section>
 
   <!-- STATS -->
