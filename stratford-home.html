@@ -409,59 +409,6 @@
     </div>
   </section>
 
-  <!-- WHY STRATFORD -->
-  <section id="why">
-    <div class="sec-head">
-      <div class="tag">Why Stratford</div>
-      <h2>The difference is <span class="script">where your money goes</span></h2>
-      <p>Three ways to run your advertising. Only one keeps you in full control of your capital.</p>
-    </div>
-    <div class="compare">
-      <div class="compare-row compare-head">
-        <div class="compare-cell rowlabel"></div>
-        <div class="compare-cell">Do It Yourself</div>
-        <div class="compare-cell">Typical Agency</div>
-        <div class="compare-cell us">Stratford</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">You pay Facebook directly</div>
-        <div class="compare-cell mark yes">✓</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">Never hands over your ad budget</div>
-        <div class="compare-cell mark yes">✓</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">Expert targeting &amp; creative</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes">✓</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">Daily optimization &amp; tracking</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes">✓</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">No long-term contract</div>
-        <div class="compare-cell mark yes">✓</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-      <div class="compare-row">
-        <div class="compare-cell rowlabel">Free trial before you commit</div>
-        <div class="compare-cell mark no">—</div>
-        <div class="compare-cell mark no">✗</div>
-        <div class="compare-cell mark yes us-col">✓</div>
-      </div>
-    </div>
-  </section>
-
   <!-- PRICING -->
   <section id="pricing">
     <div class="sec-head reveal">
@@ -532,40 +479,6 @@
         <div class="figure" data-count="100" data-suffix="%">0</div>
         <div class="cap">Control stays with you</div>
       </div>
-    </div>
-  </section>
-
-  <!-- ROI CALCULATOR -->
-  <section id="calc">
-    <div class="sec-head reveal">
-      <div class="tag">See The Math</div>
-      <h2>What could new customers <span class="script">be worth?</span></h2>
-      <p>Slide to your numbers. Even a handful of new customers can outweigh the entire cost of running ads.</p>
-    </div>
-    <div class="calc reveal">
-      <div class="calc-grid">
-        <div class="calc-inputs">
-          <div class="calc-field">
-            <label>Average commission per closed deal <span class="val" id="vDeal">$5,000</span></label>
-            <input type="range" id="deal" min="500" max="50000" step="500" value="5000">
-          </div>
-          <div class="calc-field">
-            <label>Deals closed per month <span class="val" id="vClose">3</span></label>
-            <input type="range" id="close" min="1" max="30" step="1" value="3">
-          </div>
-          <div class="calc-field">
-            <label>Monthly investment (ads + fee) <span class="val" id="vSpend">$3,000</span></label>
-            <input type="range" id="spend" min="1500" max="8000" step="250" value="3000">
-          </div>
-        </div>
-        <div class="calc-result">
-          <div class="rlabel">Estimated monthly revenue</div>
-          <div class="rbig"><span class="u">$</span><span id="rRev">15,000</span></div>
-          <div class="rsub">After your total investment, that's <strong id="rProfit">$12,000</strong> in new revenue for the month.</div>
-          <div class="rroi" id="rRoi">5.0× return</div>
-        </div>
-      </div>
-      <p class="disclaim">Illustrative only — results depend on your offer, market, and close rate. Not a guarantee. It simply shows why even modest results make advertising worthwhile.</p>
     </div>
   </section>
 
@@ -682,27 +595,6 @@
     });
   }
 
-  /* ROI calculator */
-  var deal = document.getElementById("deal");
-  var close = document.getElementById("close");
-  var spend = document.getElementById("spend");
-  function money(n){ return "$" + Math.round(n).toLocaleString(); }
-  function calc(){
-    if(!deal||!close||!spend) return;
-    var d = +deal.value, c = +close.value, s = +spend.value;
-    var rev = d * c;
-    var profit = rev - s;
-    var roi = s > 0 ? (rev / s) : 0;
-    document.getElementById("vDeal").textContent = money(d);
-    document.getElementById("vClose").textContent = c;
-    document.getElementById("vSpend").textContent = money(s);
-    document.getElementById("rRev").textContent = Math.round(rev).toLocaleString();
-    var pEl = document.getElementById("rProfit");
-    pEl.textContent = (profit >= 0 ? money(profit) : "-" + money(Math.abs(profit)));
-    document.getElementById("rRoi").textContent = roi.toFixed(1) + "\u00d7 return";
-  }
-  [deal, close, spend].forEach(function(el){ if(el) el.addEventListener("input", calc); });
-  calc();
 })();
 </script>
 
